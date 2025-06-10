@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://bnnqjmoiwxvlw"]
+
+[ext_resource type="Script" uid="uid://brfbtnmpphtgw" path="res://hacking/server.gd" id="1_nxwuo"]
+[ext_resource type="Texture2D" uid="uid://b61wn6elj78pi" path="res://hacking/Server.png" id="2_cxoxq"]
+
+[node name="Server" type="Node2D"]
+script = ExtResource("1_nxwuo")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_cxoxq")
