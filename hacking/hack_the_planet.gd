@@ -15,7 +15,6 @@ func load_level() -> void:
 	# create servers (nodes) and connections (edges)
 	# start node
 	add_server(1, Vector2(576,600), [2,3,4])
-	move_player_to(servers[1])
 	# layer 1: +128px up
 	add_server(2, Vector2(448,472), [5,3,1])
 	add_server(3, Vector2(576,472), [2,6,4])
@@ -26,7 +25,7 @@ func load_level() -> void:
 	add_server(7, Vector2(704,344), [10,4])
 	# layer 3: +128px again
 	add_server(8, Vector2(448,216), [5,9])
-	add_server(9, Vector2(576,216), [8,11,10])
+	add_server(9, Vector2(576,216), [6,8,11,10])
 	add_server(10, Vector2(704,216), [9,7])
 	# target layer
 	add_server(11, Vector2(576,88), [9])
@@ -34,7 +33,8 @@ func load_level() -> void:
 	for server in servers:
 		if server:
 			add_connections(server.id, server.edges)
-	# add user (player)
+	# setup user (player)
+	move_player_to(servers[1])
 
 func add_server(id:int, server_position:Vector2, connections:Array[int]) -> void:
 	var server = SERVER.instantiate()
@@ -59,8 +59,11 @@ func add_connections(server_id:int, connections:Array[int]) -> void:
 			connection.draw_to(target.position)
 
 func move_player_to(server:Server) -> void:
-	player.position = server.position
 	var options:Dictionary[int, Node2D] = {}
 	for edge in server.edges:
 		options[edge] = servers[edge] 
 	player.set_current_server(server, options)
+
+
+func _on_player_move_to_selected_server(key: int) -> void:
+	move_player_to(servers[key])

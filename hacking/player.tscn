@@ -1,12 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://ceddgpun5bi3i"]
+[gd_scene load_steps=4 format=3 uid="uid://ceddgpun5bi3i"]
 
 [ext_resource type="Script" uid="uid://f5sbahlsr124" path="res://hacking/player.gd" id="1_q1plw"]
+[ext_resource type="Texture2D" uid="uid://bgayo6alcsnsk" path="res://hacking/Pointer.png" id="2_ka2o4"]
 [ext_resource type="Texture2D" uid="uid://dattgm5lpdu6d" path="res://hacking/Outline.png" id="2_ljtp2"]
 
 [node name="Player" type="Node2D"]
 script = ExtResource("1_q1plw")
 
-[node name="SelectSprite" type="Sprite2D" parent="."]
+[node name="Selector" type="Node2D" parent="."]
+
+[node name="SelectSprite" type="Sprite2D" parent="Selector"]
+position = Vector2(-43, 0)
+rotation = -1.5708
+texture = ExtResource("2_ka2o4")
 
 [node name="OutlineSprite" type="Sprite2D" parent="."]
 texture = ExtResource("2_ljtp2")
@@ -16,3 +22,9 @@ texture = ExtResource("2_ljtp2")
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="LimboHSM" type="LimboHSM" parent="."]
+
+[node name="HackTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[connection signal="timeout" from="HackTimer" to="." method="_on_hack_timer_timeout"]

@@ -8,3 +8,5 @@ script = ExtResource("1_hvljp")
 
 [node name="Player" parent="." instance=ExtResource("2_cumln")]
 z_index = 1
+
+[connection signal="move_to_selected_server" from="Player" to="." method="_on_player_move_to_selected_server"]
