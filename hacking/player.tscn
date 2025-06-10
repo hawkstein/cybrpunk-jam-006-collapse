@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://ceddgpun5bi3i"]
+
+[ext_resource type="Script" uid="uid://f5sbahlsr124" path="res://hacking/player.gd" id="1_q1plw"]
+[ext_resource type="Texture2D" uid="uid://dattgm5lpdu6d" path="res://hacking/Outline.png" id="2_ljtp2"]
+
+[node name="Player" type="Node2D"]
+script = ExtResource("1_q1plw")
+
+[node name="SelectSprite" type="Sprite2D" parent="."]
+
+[node name="OutlineSprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_ljtp2")
+
+[node name="UserSprite" type="Sprite2D" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="LimboHSM" type="LimboHSM" parent="."]

@@ -2,9 +2,9 @@ extends Node2D
 
 const SERVER = preload("res://hacking/server.tscn")
 const CONNECTION = preload("res://hacking/connection.tscn")
+@onready var player: Node2D = $Player
 
 var servers:= Array([], TYPE_OBJECT, "Node2D", null)      
-
 
 func _ready() -> void:
 	servers.resize(12)
@@ -15,6 +15,7 @@ func load_level() -> void:
 	# create servers (nodes) and connections (edges)
 	# start node
 	add_server(1, Vector2(576,600), [2,3,4])
+	move_player_to(servers[1])
 	# layer 1: +128px up
 	add_server(2, Vector2(448,472), [5,3,1])
 	add_server(3, Vector2(576,472), [2,6,4])
@@ -56,3 +57,10 @@ func add_connections(server_id:int, connections:Array[int]) -> void:
 			parent_server.connections.append(connection)
 			target.connections.append(connection)
 			connection.draw_to(target.position)
+
+func move_player_to(server:Server) -> void:
+	player.position = server.position
+	var options:Dictionary[int, Node2D] = {}
+	for edge in server.edges:
+		options[edge] = servers[edge] 
+	player.set_current_server(server, options)
