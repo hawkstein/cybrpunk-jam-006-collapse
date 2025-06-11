@@ -4,6 +4,7 @@ extends Node2D
 
 var parent:int
 var child:int
+var idx:int
 
 func draw_to(pos:Vector2) -> void:
 	line_2d.add_point(Vector2(0,0))

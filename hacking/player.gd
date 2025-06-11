@@ -18,21 +18,24 @@ func _initialise_hsm() -> void:
 	var select_state := LimboState.new().named("Select").call_on_enter(_on_select_enter).call_on_update(_on_select_update)
 	var hack_state := LimboState.new().named("Hack").call_on_enter(_on_hack_enter)
 	var move_state := LimboState.new().named("Move")
+	var success_state := LimboState.new().named("Success").call_on_enter(_on_success_enter)
 	
 	hsm.add_child(select_state)
 	hsm.add_child(hack_state)
 	hsm.add_child(move_state)
+	hsm.add_child(success_state)
 	
 	hsm.add_transition(select_state, hack_state, &"hack_started")
 	hsm.add_transition(hack_state, move_state, &"hack_finished")
 	hsm.add_transition(move_state, select_state, &"move_finished")
+	hsm.add_transition(move_state, success_state, &"player_succeeded")
 	
 	hsm.initialize(self)
 	hsm.initial_state = select_state
 	hsm.set_active(true)
 
 func _on_select_enter() -> void:
-	selector.visible = true
+		selector.visible = true
 
 func _on_select_update(_delta: float) -> void:
 	if Input.is_action_just_released("left"):
@@ -45,6 +48,9 @@ func _on_select_update(_delta: float) -> void:
 func _on_hack_enter() -> void:
 	selector.visible = false
 	hack_timer.start()
+
+func _on_success_enter() -> void:
+	print("You have succeeded! Run ended.")
 
 func _update_selection(amount:int) -> void:
 	selection_index += amount
@@ -72,4 +78,7 @@ func set_current_server(_current_server:Server, _options:Dictionary[int, Node2D]
 	position = current_server.position
 	selection_key = options.keys().get(selection_index)
 	_point_towards_selection()
-	hsm.dispatch(&"move_finished")
+	if current_server.is_target:
+		hsm.dispatch(&"player_succeeded")
+	else:
+		hsm.dispatch(&"move_finished")
