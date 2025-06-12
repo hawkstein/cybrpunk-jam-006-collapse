@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://b031uf3cw1bg1"]
+
+[ext_resource type="Script" uid="uid://2rcoibgqfrnj" path="res://hacking/guard.gd" id="1_23rji"]
+[ext_resource type="Texture2D" uid="uid://thq2efynmoqr" path="res://hacking/Guard.png" id="2_es8jo"]
+[ext_resource type="BehaviorTree" uid="uid://dein6g8t4i6fa" path="res://ai/trees/guard.tres" id="3_xcj52"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_xcj52"]
+
+[node name="Guard" type="Node2D"]
+script = ExtResource("1_23rji")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_es8jo")
+
+[node name="BTPlayer" type="BTPlayer" parent="."]
+behavior_tree = ExtResource("3_xcj52")
+blackboard_plan = SubResource("BlackboardPlan_xcj52")

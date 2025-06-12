@@ -2,6 +2,8 @@ extends Node2D
 
 const SERVER = preload("res://hacking/server.tscn")
 const CONNECTION = preload("res://hacking/connection.tscn")
+const GUARD = preload("res://hacking/Guard.tscn")
+
 @onready var player: Node2D = $Player
 
 var servers:= Array([], TYPE_OBJECT, "Node2D", null)
@@ -37,6 +39,15 @@ func load_level() -> void:
 			add_connections(server.id, server.edges)
 	# setup user (player)
 	move_player_to(servers[1])
+	
+	# add guard
+	var guard = GUARD.instantiate()
+	add_child(guard)
+	var options:Dictionary[int, Node2D] = {}
+	for edge in servers[7].edges:
+		options[edge] = servers[edge] 
+	guard.set_current_server(servers[7], options, player)
+	guard.connect("request_move_to_server", _on_guard_request_move)
 
 func add_server(id:int, server_position:Vector2, p_connections:Array[int]) -> void:
 	var server = SERVER.instantiate()
@@ -67,7 +78,15 @@ func move_player_to(server:Server) -> void:
 	for edge in server.edges:
 		options[edge] = servers[edge] 
 	player.set_current_server(server, options)
-
+	
+func move_guard_to(guard:Guard, server:Server) -> void:
+	var options:Dictionary[int, Node2D] = {}
+	for edge in server.edges:
+		options[edge] = servers[edge] 
+	guard.set_current_server(server, options, player)
 
 func _on_player_move_to_selected_server(key: int) -> void:
 	move_player_to(servers[key])
+
+func _on_guard_request_move(guard:Guard, key:int) -> void:
+	move_guard_to(guard, servers[key])

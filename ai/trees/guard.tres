@@ -1,0 +1,22 @@
+[gd_resource type="BehaviorTree" load_steps=7 format=3 uid="uid://dein6g8t4i6fa"]
+
+[ext_resource type="Script" uid="uid://dtlkq1frlraft" path="res://ai/tasks/choose_random_connection.gd" id="1_bllos"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_hhoww"]
+
+[sub_resource type="BTAction" id="BTAction_aqm1j"]
+script = ExtResource("1_bllos")
+
+[sub_resource type="BTWait" id="BTWait_mrdxm"]
+duration = 3.0
+
+[sub_resource type="BTSequence" id="BTSequence_hhoww"]
+custom_name = "Random Move Sequence"
+children = [SubResource("BTAction_aqm1j"), SubResource("BTWait_mrdxm")]
+
+[sub_resource type="BTSelector" id="BTSelector_bllos"]
+children = [SubResource("BTSequence_hhoww")]
+
+[resource]
+blackboard_plan = SubResource("BlackboardPlan_hhoww")
+root_task = SubResource("BTSelector_bllos")
