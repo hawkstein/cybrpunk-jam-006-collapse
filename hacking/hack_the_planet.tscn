@@ -21,6 +21,7 @@ offset_bottom = 648.0
 process_mode = 3
 visible = false
 
+[connection signal="focus_tween_finished" from="Player" to="." method="_on_player_focus_tween_finished"]
 [connection signal="move_to_selected_server" from="Player" to="." method="_on_player_move_to_selected_server"]
 [connection signal="run_ended" from="Player" to="." method="_on_player_run_ended"]
 [connection signal="hint_accept" from="Tutorial/Hint" to="." method="_on_hint_hint_accept"]

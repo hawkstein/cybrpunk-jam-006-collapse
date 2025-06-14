@@ -96,11 +96,6 @@ func place_hint(at:Vector2, text:String) -> void:
 	get_tree().paused = true
 	hint.focus(player.position)
 
-func hide_hint() -> void:
-	hint.visible = false
-	player.focus()
-	get_tree().paused = false
-
 func _on_player_move_to_selected_server(key: int) -> void:
 	move_player_to(servers[key])
 
@@ -110,6 +105,9 @@ func _on_guard_request_move(guard:Guard, key:int) -> void:
 func _on_player_run_ended() -> void:
 	get_tree().paused = true
 
-
 func _on_hint_hint_accept() -> void:
-	hide_hint()
+	hint.visible = false
+	player.focus(hint.camera.global_position)
+
+func _on_player_focus_tween_finished() -> void:
+	get_tree().paused = false

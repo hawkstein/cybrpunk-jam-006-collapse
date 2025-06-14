@@ -8,6 +8,7 @@ extends Node2D
 
 signal move_to_selected_server(key:int)
 signal run_ended
+signal focus_tween_finished
 
 var current_server:Server
 var options:Dictionary[int, Node2D]
@@ -97,5 +98,9 @@ func set_current_server(_current_server:Server, _options:Dictionary[int, Node2D]
 	else:
 		hsm.dispatch(&"move_finished")
 
-func focus() -> void:
+func focus(from_global:Vector2) -> void:
+	camera.global_position = from_global
+	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	tween.tween_property(camera, "position", Vector2(0,0), 2).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_callback(func(): focus_tween_finished.emit())
 	camera.make_current()
