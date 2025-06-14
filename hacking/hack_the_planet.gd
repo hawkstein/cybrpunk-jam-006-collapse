@@ -50,8 +50,9 @@ func load_level() -> void:
 	guard.set_current_server(servers[7], options, player)
 	guard.connect("request_move_to_server", _on_guard_request_move)
 	
-	#add initial hint
-	place_hint(target.position, "Make your way to the target server")
+	#add initial hints
+	HintManager.queue_hint(&"target_server", target)
+	HintManager.queue_hint(&"enemy_guard", guard)
 
 func add_server(id:int, server_position:Vector2, p_connections:Array[int]) -> void:
 	var server = SERVER.instantiate()
@@ -89,13 +90,6 @@ func move_guard_to(guard:Guard, server:Server) -> void:
 		options[edge] = servers[edge] 
 	guard.set_current_server(server, options, player)
 
-func place_hint(at:Vector2, text:String) -> void:
-	hint.visible = true
-	hint.position = at
-	hint.get_node("Label").text = text
-	get_tree().paused = true
-	hint.focus(player.position)
-
 func _on_player_move_to_selected_server(key: int) -> void:
 	move_player_to(servers[key])
 
@@ -106,7 +100,6 @@ func _on_player_run_ended() -> void:
 	get_tree().paused = true
 
 func _on_hint_hint_accept() -> void:
-	hint.visible = false
 	player.focus(hint.camera.global_position)
 
 func _on_player_focus_tween_finished() -> void:

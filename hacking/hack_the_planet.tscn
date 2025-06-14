@@ -17,9 +17,10 @@ anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
 
-[node name="Hint" parent="Tutorial" instance=ExtResource("3_5k5bl")]
+[node name="Hint" parent="Tutorial" node_paths=PackedStringArray("player") instance=ExtResource("3_5k5bl")]
 process_mode = 3
 visible = false
+player = NodePath("../../Player")
 
 [connection signal="focus_tween_finished" from="Player" to="." method="_on_player_focus_tween_finished"]
 [connection signal="move_to_selected_server" from="Player" to="." method="_on_player_move_to_selected_server"]

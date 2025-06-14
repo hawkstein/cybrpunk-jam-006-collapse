@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 Director="*res://main/director.gd"
+HintManager="*res://main/hint_manager.gd"
 
 [display]
 
