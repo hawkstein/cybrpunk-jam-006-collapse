@@ -5,7 +5,7 @@ func _tick(_delta: float) -> Status:
 		var options = agent.options
 		var idx = randi_range(0, options.keys().size() - 1)
 		var	choice = options.keys().get(idx)
-		while choice == blackboard.get_var(&"previous_server") and options.keys().size() > 1:
+		while choice == blackboard.get_var(&"previous_server", null, false) and options.keys().size() > 1:
 			idx = randi_range(0, options.keys().size() - 1)
 			choice = options.keys().get(idx)
 		blackboard.set_var(&"previous_server", agent.current_server.id)

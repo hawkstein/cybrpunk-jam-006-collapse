@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://b7g1nyv4sqjij"]
+[gd_scene load_steps=4 format=3 uid="uid://b7g1nyv4sqjij"]
 
 [ext_resource type="Script" uid="uid://bxt4teaowjdx5" path="res://hacking/hack_the_planet.gd" id="1_hvljp"]
 [ext_resource type="PackedScene" uid="uid://ceddgpun5bi3i" path="res://hacking/player.tscn" id="2_cumln"]
+[ext_resource type="PackedScene" uid="uid://b0ololvkngkp3" path="res://hacking/hint.tscn" id="3_5k5bl"]
 
 [node name="Hacking" type="Node2D"]
 script = ExtResource("1_hvljp")
@@ -9,5 +10,17 @@ script = ExtResource("1_hvljp")
 [node name="Player" parent="." instance=ExtResource("2_cumln")]
 z_index = 1
 
+[node name="Tutorial" type="Control" parent="."]
+z_index = 2
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="Hint" parent="Tutorial" instance=ExtResource("3_5k5bl")]
+process_mode = 3
+visible = false
+
 [connection signal="move_to_selected_server" from="Player" to="." method="_on_player_move_to_selected_server"]
 [connection signal="run_ended" from="Player" to="." method="_on_player_run_ended"]
+[connection signal="hint_accept" from="Tutorial/Hint" to="." method="_on_hint_hint_accept"]

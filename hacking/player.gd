@@ -1,8 +1,10 @@
 extends Node2D
 
+@onready var camera_2d: Camera2D = $Camera2D
 @onready var hsm: LimboHSM = $LimboHSM
 @onready var selector: Node2D = $Selector
 @onready var hack_timer: Timer = $HackTimer
+@onready var camera: Camera2D = $Camera2D
 
 signal move_to_selected_server(key:int)
 signal run_ended
@@ -94,3 +96,6 @@ func set_current_server(_current_server:Server, _options:Dictionary[int, Node2D]
 		hsm.dispatch(&"player_succeeded")
 	else:
 		hsm.dispatch(&"move_finished")
+
+func focus() -> void:
+	camera.make_current()

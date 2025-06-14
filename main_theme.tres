@@ -1,0 +1,16 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://bgpm23y06s5df"]
+
+[ext_resource type="FontFile" uid="uid://wt66k3fampfe" path="res://PixelOperator8.ttf" id="1_470mv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gsqoc"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 2
+border_width_top = 10
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.905882, 0.835294, 0, 1)
+
+[resource]
+Label/colors/font_color = Color(0, 0, 0, 1)
+Label/fonts/font = ExtResource("1_470mv")
+Panel/styles/panel = SubResource("StyleBoxFlat_gsqoc")
