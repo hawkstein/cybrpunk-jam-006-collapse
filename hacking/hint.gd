@@ -39,18 +39,18 @@ func _on_hidden_update(_delta: float) -> void:
 
 func _on_focus_enter() -> void:
 	var hint = HintManager.pop_hint()
-	#print(hint.target.position)
 	if hint:
-		# adjust hint UI and tween camera to it
-		visible = true
+		visible = false
 		get_node("Label").text = hint.label
 		get_tree().paused = true
-		tween = create_tween()
 		position = hint.target.position
 		camera.global_position = last_target.position
 		last_target = hint.target
+		tween = create_tween()
 		tween.tween_property(camera, "position", Vector2(0,0), 4).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN_OUT)
 		tween.tween_callback(func(): hsm.dispatch(&"display"))
+		var vt = create_tween()
+		vt.tween_callback(func(): visible = true).set_delay(2.0)
 		camera.make_current()
 
 func _on_display_update(_delta: float) -> void:

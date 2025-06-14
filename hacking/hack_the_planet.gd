@@ -53,6 +53,7 @@ func load_level() -> void:
 	#add initial hints
 	HintManager.queue_hint(&"target_server", target)
 	HintManager.queue_hint(&"enemy_guard", guard)
+	HintManager.queue_hint(&"hack_move", player)
 
 func add_server(id:int, server_position:Vector2, p_connections:Array[int]) -> void:
 	var server = SERVER.instantiate()
