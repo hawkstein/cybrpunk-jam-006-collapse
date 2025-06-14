@@ -5,6 +5,7 @@ extends Node2D
 @onready var hack_timer: Timer = $HackTimer
 
 signal move_to_selected_server(key:int)
+signal run_ended
 
 var current_server:Server
 var options:Dictionary[int, Node2D]
@@ -54,9 +55,11 @@ func _on_hack_enter() -> void:
 
 func _on_success_enter() -> void:
 	print("You have succeeded! Run ended.")
+	run_ended.emit()
 
 func _on_failure_enter() -> void:
 	print("You were detected! Run ended.")
+	run_ended.emit()
 
 func _update_selection(amount:int) -> void:
 	selection_index += amount

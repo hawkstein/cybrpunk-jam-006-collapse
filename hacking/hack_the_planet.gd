@@ -90,3 +90,6 @@ func _on_player_move_to_selected_server(key: int) -> void:
 
 func _on_guard_request_move(guard:Guard, key:int) -> void:
 	move_guard_to(guard, servers[key])
+
+func _on_player_run_ended() -> void:
+	get_tree().paused = true
