@@ -3,23 +3,29 @@ extends Node2D
 @onready var camera_2d: Camera2D = $Camera2D
 @onready var hsm: LimboHSM = $LimboHSM
 @onready var selector: Node2D = $Selector
-@onready var hack_timer: Timer = $HackTimer
 @onready var camera: Camera2D = $Camera2D
 @onready var outline: Sprite2D = $OutlineSprite
 
 signal move_to_selected_server(key:int)
 signal run_ended(success:bool)
 signal focus_tween_finished
+signal overclock_change(overlock_percentage:float)
 
 var current_server:Server
 var options:Dictionary[int, Node2D]
 var selection_key:int
 var selection_index:int
 
-@export var overclock := 100
-@export var burn_rate := 1
-@export var cool_rate := 0.5
+@export var overclock := 50.0
+@export var overclock_maximum := 50.0
+@export var burn_rate := 5.0
+@export var cool_rate := 1.0
 var overclocking := false
+
+var hack_time := 5.0
+@export var default_hack_time := 5.0
+@export var hack_rate := 2.0
+@export var overclock_hack_rate := 4.0
 
 func _ready() -> void:
 	_initialise_hsm()
@@ -50,26 +56,38 @@ func _initialise_hsm() -> void:
 func _on_select_enter() -> void:
 	selector.visible = true
 
-func _on_select_update(_delta: float) -> void:
+func _on_select_update(delta: float) -> void:
+	_check_overclock_toggle()
+	_update_overclock(delta)
 	if Input.is_action_just_released("left"):
 		_update_selection(-1)
 	elif Input.is_action_just_released("right"):
 		_update_selection(1)
 	elif Input.is_action_just_released("select"):
 		hsm.dispatch(&"hack_started")
-	elif Input.is_action_just_released("overclock"):
-		overclocking = !overclocking
-		print("overclocking: ", overclocking)
 
 func _on_hack_enter() -> void:
 	selector.visible = false
-	hack_timer.start()
+	hack_time = default_hack_time
 	
 func _on_hack_update(delta:float) -> void:
+	_check_overclock_toggle()
 	_update_overclock(delta)
+	if overclocking:
+		hack_time -= overclock_hack_rate * delta
+	else:
+		hack_time -= hack_rate * delta
+	if hack_time < 0:
+		hsm.dispatch(&"hack_finished")
+		move_to_selected_server.emit(selection_key)
 
 func _on_move_update(delta:float) -> void:
+	_check_overclock_toggle()
 	_update_overclock(delta)
+
+func _check_overclock_toggle() -> void:
+	if Input.is_action_just_released("overclock"):
+		overclocking = !overclocking
 
 func _update_overclock(delta:float) -> void:
 	var previous = overclock
@@ -77,9 +95,12 @@ func _update_overclock(delta:float) -> void:
 		overclock -= burn_rate * delta
 	else:
 		overclock += cool_rate * delta
-	overclock = max(0, overclock)
+	overclock = clampf(overclock, 0, overclock_maximum)
+	if overclock == 0:
+		overclocking = false
 	if previous != overclock:
-		print(overclock)
+		var percentage = 100 - roundi((overclock/overclock_maximum) * 100)
+		overclock_change.emit(percentage)
 
 func _on_success_enter() -> void:
 	print("You have succeeded! Run ended.")
@@ -98,11 +119,6 @@ func _update_selection(amount:int) -> void:
 		selection_index = size - 1
 	selection_key = options.keys().get(selection_index)
 	_point_towards_selection()
-
-func _on_hack_timer_timeout() -> void:
-	if hsm.get_active_state().name == "Hack":
-		hsm.dispatch(&"hack_finished")
-		move_to_selected_server.emit(selection_key)
 
 func _point_towards_selection() -> void:
 	var vector_towards = current_server.position - options[selection_key].position

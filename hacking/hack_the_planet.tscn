@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://b7g1nyv4sqjij"]
+[gd_scene load_steps=5 format=3 uid="uid://b7g1nyv4sqjij"]
 
 [ext_resource type="Script" uid="uid://bxt4teaowjdx5" path="res://hacking/hack_the_planet.gd" id="1_hvljp"]
 [ext_resource type="PackedScene" uid="uid://ceddgpun5bi3i" path="res://hacking/player.tscn" id="2_cumln"]
 [ext_resource type="PackedScene" uid="uid://b0ololvkngkp3" path="res://hacking/hint.tscn" id="3_5k5bl"]
+[ext_resource type="FontFile" uid="uid://wt66k3fampfe" path="res://PixelOperator8.ttf" id="4_av3g5"]
 
 [node name="Hacking" type="Node2D"]
 script = ExtResource("1_hvljp")
@@ -21,6 +22,33 @@ offset_bottom = 648.0
 process_mode = 3
 visible = false
 player = NodePath("../../Player")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Layout" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Overclock" type="Label" parent="UI/Layout"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -235.0
+offset_top = -49.0
+offset_right = -35.0
+offset_bottom = -26.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("4_av3g5")
+text = "Overclock: 0%"
+horizontal_alignment = 2
 
 [node name="Background" type="CanvasLayer" parent="."]
 layer = -1
@@ -44,5 +72,6 @@ color = Color(0, 0, 0, 1)
 
 [connection signal="focus_tween_finished" from="Player" to="." method="_on_player_focus_tween_finished"]
 [connection signal="move_to_selected_server" from="Player" to="." method="_on_player_move_to_selected_server"]
+[connection signal="overclock_change" from="Player" to="." method="_on_player_overclock_change"]
 [connection signal="run_ended" from="Player" to="." method="_on_player_run_ended"]
 [connection signal="hint_accept" from="Tutorial/Hint" to="." method="_on_hint_hint_accept"]

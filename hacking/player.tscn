@@ -22,9 +22,3 @@ texture = ExtResource("2_ljtp2")
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="LimboHSM" type="LimboHSM" parent="."]
-
-[node name="HackTimer" type="Timer" parent="."]
-wait_time = 2.0
-one_shot = true
-
-[connection signal="timeout" from="HackTimer" to="." method="_on_hack_timer_timeout"]
