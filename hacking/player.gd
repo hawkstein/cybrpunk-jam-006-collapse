@@ -100,7 +100,8 @@ func set_current_server(_current_server:Server, _options:Dictionary[int, Node2D]
 
 func focus(from_global:Vector2) -> void:
 	camera.global_position = from_global
+	var time = clampf(camera.position.length()/2, 0, 300) / 100
 	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-	tween.tween_property(camera, "position", Vector2(0,0), 2).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(camera, "position", Vector2(0,0), time).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN_OUT)
 	tween.tween_callback(func(): focus_tween_finished.emit())
 	camera.make_current()

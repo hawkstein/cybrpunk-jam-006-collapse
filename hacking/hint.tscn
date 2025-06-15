@@ -23,7 +23,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_3w1sn")
 
-[node name="Label" type="Label" parent="."]
+[node name="HintLabel" type="Label" parent="."]
 layout_mode = 0
 offset_left = -191.0
 offset_top = -132.0
@@ -32,6 +32,15 @@ offset_bottom = -61.0
 theme = ExtResource("1_3w1sn")
 text = "Hint text goes here"
 autowrap_mode = 2
+
+[node name="CloseLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = -87.0
+offset_top = -76.0
+offset_right = 197.0
+offset_bottom = -53.0
+theme = ExtResource("1_3w1sn")
+text = "[Enter/space to close]"
 
 [node name="CameraCentre" type="Control" parent="."]
 layout_mode = 1

@@ -45,9 +45,9 @@ func load_level() -> void:
 	var guard = GUARD.instantiate()
 	add_child(guard)
 	var options:Dictionary[int, Node2D] = {}
-	for edge in servers[7].edges:
+	for edge in servers[9].edges:
 		options[edge] = servers[edge] 
-	guard.set_current_server(servers[7], options, player)
+	guard.set_current_server(servers[9], options, player)
 	guard.connect("request_move_to_server", _on_guard_request_move)
 	
 	#add initial hints
