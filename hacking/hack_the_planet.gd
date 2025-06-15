@@ -39,7 +39,10 @@ func load_level() -> void:
 		if server:
 			add_connections(server.id, server.edges)
 	# setup user (player)
-	move_player_to(servers[1])
+	# for init, manually set the position before the game gets paused
+	var start_server = servers[1]
+	player.position = start_server.position
+	move_player_to(start_server)
 	
 	# add guard
 	var guard = GUARD.instantiate()
@@ -102,12 +105,15 @@ func _on_player_run_ended(success:bool) -> void:
 	# TODO: add sound effects and animation
 	# but for now just wait a little and then change scene
 	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	var no_click_opts = SceneManager.create_general_options(Color(0,0,0), 0, false)
+	var fade_opts = SceneManager.create_options(0.5)
 	if success:
 		tween.tween_callback(func():
-			print("run...")
-			var fade_opts = SceneManager.create_options()
-			var no_click_opts = SceneManager.create_general_options(Color(0,0,0), 0, false)
 			SceneManager.change_scene("run_success_screen", fade_opts , fade_opts, no_click_opts)).set_delay(1)
+	else:
+		var slow_fade_opts = SceneManager.create_options(2)
+		tween.tween_callback(func():
+			SceneManager.change_scene("run_failed_screen", slow_fade_opts , fade_opts, no_click_opts)).set_delay(1)
 
 func _on_hint_hint_accept() -> void:
 	player.focus(hint.camera.global_position)

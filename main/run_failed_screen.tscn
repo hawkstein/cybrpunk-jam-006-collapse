@@ -1,0 +1,56 @@
+[gd_scene load_steps=3 format=3 uid="uid://bie2xiyc7oehq"]
+
+[ext_resource type="Script" uid="uid://bwnlyemtchhb8" path="res://main/run_failed_screen.gd" id="1_fhc71"]
+[ext_resource type="Theme" uid="uid://bgpm23y06s5df" path="res://main_theme.tres" id="1_x0hxb"]
+
+[node name="RunFailedScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fhc71")
+
+[node name="BackgroundRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="."]
+offset_left = 377.0
+offset_top = 175.0
+offset_right = 743.0
+offset_bottom = 226.0
+theme = ExtResource("1_x0hxb")
+theme_override_colors/font_color = Color(0.984314, 0.94902, 0.211765, 1)
+theme_override_font_sizes/font_size = 24
+text = "Run failed.
+Retry?
+
+Y/N?"
+
+[node name="RetryButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 382.0
+offset_top = 321.0
+offset_right = 461.0
+offset_bottom = 361.0
+theme = ExtResource("1_x0hxb")
+text = "Yes"
+
+[node name="NoButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 382.0
+offset_top = 387.0
+offset_right = 440.0
+offset_bottom = 427.0
+theme = ExtResource("1_x0hxb")
+text = "No"
+
+[connection signal="pressed" from="RetryButton" to="." method="_on_retry_button_pressed"]
+[connection signal="pressed" from="NoButton" to="." method="_on_no_button_pressed"]

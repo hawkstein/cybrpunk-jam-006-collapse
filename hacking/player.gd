@@ -5,6 +5,7 @@ extends Node2D
 @onready var selector: Node2D = $Selector
 @onready var hack_timer: Timer = $HackTimer
 @onready var camera: Camera2D = $Camera2D
+@onready var outline: Sprite2D = $OutlineSprite
 
 signal move_to_selected_server(key:int)
 signal run_ended(success:bool)
@@ -88,9 +89,20 @@ func set_current_server(_current_server:Server, _options:Dictionary[int, Node2D]
 	current_server = _current_server
 	options = _options
 	selection_index = 0
-	position = current_server.position
+	#position = current_server.position
 	selection_key = options.keys().get(selection_index)
 	_point_towards_selection()
+	var tween = create_tween()
+	# fade out circle
+	tween.tween_property(outline, "modulate:a", 0, 0.1)
+	tween.tween_property(self, "position", current_server.position, 0.5).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	tween.tween_property(outline, "modulate:a", 1, 0.2)
+	tween.tween_callback(_check_status)
+	# animate move to the target server
+	# fade circle back in
+	# check status
+
+func _check_status() -> void:
 	if current_server.enemies.size() > 0:
 		hsm.dispatch(&"detected")
 	if current_server.is_target:
