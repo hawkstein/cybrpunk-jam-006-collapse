@@ -7,7 +7,7 @@ extends Node2D
 @onready var camera: Camera2D = $Camera2D
 
 signal move_to_selected_server(key:int)
-signal run_ended
+signal run_ended(success:bool)
 signal focus_tween_finished
 
 var current_server:Server
@@ -58,11 +58,11 @@ func _on_hack_enter() -> void:
 
 func _on_success_enter() -> void:
 	print("You have succeeded! Run ended.")
-	run_ended.emit()
+	run_ended.emit(true)
 
 func _on_failure_enter() -> void:
 	print("You were detected! Run ended.")
-	run_ended.emit()
+	run_ended.emit(false)
 
 func _update_selection(amount:int) -> void:
 	selection_index += amount

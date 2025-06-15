@@ -1,0 +1,48 @@
+[gd_scene load_steps=4 format=3 uid="uid://8icjieqgbi3x"]
+
+[ext_resource type="Theme" uid="uid://bgpm23y06s5df" path="res://main_theme.tres" id="1_3o8vg"]
+[ext_resource type="Script" uid="uid://b7ujbhdotf30m" path="res://main/run_success_screen.gd" id="1_26yha"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_26yha"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="RunSuccessScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_26yha")
+
+[node name="Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_26yha")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 377.0
+offset_top = 175.0
+offset_right = 743.0
+offset_bottom = 226.0
+theme = ExtResource("1_3o8vg")
+theme_override_colors/font_color = Color(0.984314, 0.94902, 0.211765, 1)
+theme_override_font_sizes/font_size = 24
+text = "Run succeeded.
+Initialise next run?"
+
+[node name="StartButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 506.0
+offset_top = 289.0
+offset_right = 621.0
+offset_bottom = 329.0
+theme = ExtResource("1_3o8vg")
+text = "Start"
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]

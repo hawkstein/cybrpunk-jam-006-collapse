@@ -97,8 +97,17 @@ func _on_player_move_to_selected_server(key: int) -> void:
 func _on_guard_request_move(guard:Guard, key:int) -> void:
 	move_guard_to(guard, servers[key])
 
-func _on_player_run_ended() -> void:
+func _on_player_run_ended(success:bool) -> void:
 	get_tree().paused = true
+	# TODO: add sound effects and animation
+	# but for now just wait a little and then change scene
+	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	if success:
+		tween.tween_callback(func():
+			print("run...")
+			var fade_opts = SceneManager.create_options()
+			var no_click_opts = SceneManager.create_general_options(Color(0,0,0), 0, false)
+			SceneManager.change_scene("run_success_screen", fade_opts , fade_opts, no_click_opts)).set_delay(1)
 
 func _on_hint_hint_accept() -> void:
 	player.focus(hint.camera.global_position)

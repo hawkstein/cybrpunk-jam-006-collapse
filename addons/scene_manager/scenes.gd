@@ -1,0 +1,8 @@
+#
+# Please do not edit anything in this script
+#
+# Just use the editor to change everything you want
+#
+extends Node
+
+var scenes: Dictionary = {"Guard":{"sections":[],"settings":{"All":{"subsection":"","visibility":false}},"value":"res://hacking/Guard.tscn"},"_auto_refresh":true,"_auto_save":true,"_ignore_list":["res://addons"],"_ignores_visible":true,"_sections":["Scenes","Loadings"],"connection":{"sections":[],"settings":{"All":{"subsection":"","visibility":false}},"value":"res://hacking/connection.tscn"},"hack_the_planet":{"sections":["Scenes"],"settings":{"All":{"subsection":"","visibility":true},"Scenes":{"subsection":"","visibility":true}},"value":"res://hacking/hack_the_planet.tscn"},"hint":{"sections":[],"settings":{"All":{"subsection":"","visibility":false}},"value":"res://hacking/hint.tscn"},"player":{"sections":[],"settings":{"All":{"subsection":"","visibility":false}},"value":"res://hacking/player.tscn"},"run_success_screen":{"sections":["Scenes"],"settings":{"All":{"subsection":"","visibility":true},"Scenes":{"subsection":"","visibility":true}},"value":"res://main/run_success_screen.tscn"},"server":{"sections":[],"settings":{"All":{"subsection":"","visibility":false}},"value":"res://hacking/server.tscn"},"start_screen":{"sections":["Scenes"],"settings":{"All":{"subsection":"","visibility":true},"Scenes":{"subsection":"","visibility":true}},"value":"res://main/start_screen.tscn"}}

@@ -5,6 +5,7 @@ signal hint_accept
 @onready var camera: Camera2D = $CameraCentre/Camera2D
 @onready var hsm: LimboHSM = $LimboHSM
 @export var player:Node2D
+
 var tween:Tween
 var last_target:Node2D
 
