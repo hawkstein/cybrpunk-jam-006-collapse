@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://d1qm3aas7gkoe"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2lhc0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_spgqf"]
+bg_color = Color(0.728383, 0.581445, 0.0503367, 1)
+
+[node name="HackingStatus" type="Node2D"]
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_right = 40.0
+offset_bottom = 6.0
+theme_override_styles/background = SubResource("StyleBoxFlat_2lhc0")
+theme_override_styles/fill = SubResource("StyleBoxFlat_spgqf")
+value = 50.0
+show_percentage = false

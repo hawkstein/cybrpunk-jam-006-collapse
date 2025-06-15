@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://b7g1nyv4sqjij"]
+[gd_scene load_steps=6 format=3 uid="uid://b7g1nyv4sqjij"]
 
 [ext_resource type="Script" uid="uid://bxt4teaowjdx5" path="res://hacking/hack_the_planet.gd" id="1_hvljp"]
 [ext_resource type="PackedScene" uid="uid://ceddgpun5bi3i" path="res://hacking/player.tscn" id="2_cumln"]
 [ext_resource type="PackedScene" uid="uid://b0ololvkngkp3" path="res://hacking/hint.tscn" id="3_5k5bl"]
+[ext_resource type="PackedScene" uid="uid://d1qm3aas7gkoe" path="res://hacking/hacking_status.tscn" id="3_iarxw"]
 [ext_resource type="FontFile" uid="uid://wt66k3fampfe" path="res://PixelOperator8.ttf" id="4_av3g5"]
 
 [node name="Hacking" type="Node2D"]
@@ -10,6 +11,8 @@ script = ExtResource("1_hvljp")
 
 [node name="Player" parent="." instance=ExtResource("2_cumln")]
 z_index = 1
+
+[node name="HackingStatus" parent="." instance=ExtResource("3_iarxw")]
 
 [node name="Tutorial" type="Control" parent="."]
 z_index = 2
