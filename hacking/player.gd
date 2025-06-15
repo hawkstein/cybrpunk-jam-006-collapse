@@ -17,14 +17,17 @@ var selection_key:int
 var selection_index:int
 
 @export var overclock := 100
+@export var burn_rate := 1
+@export var cool_rate := 0.5
+var overclocking := false
 
 func _ready() -> void:
 	_initialise_hsm()
 
 func _initialise_hsm() -> void:
 	var select_state := LimboState.new().named("Select").call_on_enter(_on_select_enter).call_on_update(_on_select_update)
-	var hack_state := LimboState.new().named("Hack").call_on_enter(_on_hack_enter)
-	var move_state := LimboState.new().named("Move")
+	var hack_state := LimboState.new().named("Hack").call_on_enter(_on_hack_enter).call_on_update(_on_hack_update)
+	var move_state := LimboState.new().named("Move").call_on_update(_on_move_update)
 	var success_state := LimboState.new().named("Success").call_on_enter(_on_success_enter)
 	var failure_state := LimboState.new().named("Failure").call_on_enter(_on_failure_enter)
 	
@@ -54,10 +57,29 @@ func _on_select_update(_delta: float) -> void:
 		_update_selection(1)
 	elif Input.is_action_just_released("select"):
 		hsm.dispatch(&"hack_started")
+	elif Input.is_action_just_released("overclock"):
+		overclocking = !overclocking
+		print("overclocking: ", overclocking)
 
 func _on_hack_enter() -> void:
 	selector.visible = false
 	hack_timer.start()
+	
+func _on_hack_update(delta:float) -> void:
+	_update_overclock(delta)
+
+func _on_move_update(delta:float) -> void:
+	_update_overclock(delta)
+
+func _update_overclock(delta:float) -> void:
+	var previous = overclock
+	if overclocking:
+		overclock -= burn_rate * delta
+	else:
+		overclock += cool_rate * delta
+	overclock = max(0, overclock)
+	if previous != overclock:
+		print(overclock)
 
 func _on_success_enter() -> void:
 	print("You have succeeded! Run ended.")
