@@ -13,6 +13,8 @@ script = ExtResource("1_hvljp")
 z_index = 1
 
 [node name="HackingStatus" parent="." instance=ExtResource("3_iarxw")]
+visible = false
+z_index = 1
 
 [node name="Tutorial" type="Control" parent="."]
 z_index = 2
@@ -74,6 +76,9 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [connection signal="focus_tween_finished" from="Player" to="." method="_on_player_focus_tween_finished"]
+[connection signal="hack_ended" from="Player" to="." method="_on_player_hack_ended"]
+[connection signal="hack_progress" from="Player" to="." method="_on_player_hack_progress"]
+[connection signal="hack_started" from="Player" to="." method="_on_player_hack_started"]
 [connection signal="move_to_selected_server" from="Player" to="." method="_on_player_move_to_selected_server"]
 [connection signal="overclock_change" from="Player" to="." method="_on_player_overclock_change"]
 [connection signal="run_ended" from="Player" to="." method="_on_player_run_ended"]

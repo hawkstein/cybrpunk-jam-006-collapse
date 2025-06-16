@@ -11,6 +11,9 @@ signal move_to_selected_server(key:int)
 signal run_ended(success:bool)
 signal focus_tween_finished
 signal overclock_change(overlock_percentage:float)
+signal hack_started(server_key:int, target_key:int)
+signal hack_progress(percentage:float)
+signal hack_ended
 
 var current_server:Server
 var options:Dictionary[int, Node2D]
@@ -70,6 +73,7 @@ func _on_select_update(delta: float) -> void:
 func _on_hack_enter() -> void:
 	selector.visible = false
 	hack_time = default_hack_time
+	hack_started.emit(current_server.id, selection_key)
 	
 func _on_hack_update(delta:float) -> void:
 	_check_overclock_toggle()
@@ -80,7 +84,10 @@ func _on_hack_update(delta:float) -> void:
 		hack_time -= hack_rate * delta
 	if hack_time < 0:
 		hsm.dispatch(&"hack_finished")
+		hack_ended.emit()
 		move_to_selected_server.emit(selection_key)
+	else:
+		hack_progress.emit(1-(hack_time/default_hack_time))
 
 func _on_move_update(delta:float) -> void:
 	_check_overclock_toggle()
