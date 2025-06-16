@@ -210,9 +210,9 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_wywcg")
 
 [node name="YellowBar" type="Panel" parent="."]
 layout_mode = 0
-offset_top = 100.0
+offset_top = 190.0
 offset_right = 1151.0
-offset_bottom = 279.0
+offset_bottom = 190.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ywhhl")
 
 [node name="TitleSprite" type="Sprite2D" parent="."]

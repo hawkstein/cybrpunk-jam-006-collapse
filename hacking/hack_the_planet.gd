@@ -8,13 +8,22 @@ const GUARD = preload("res://hacking/Guard.tscn")
 @onready var hint: Control = $Tutorial/Hint
 @onready var overclock_label: Label = $UI/Layout/Overclock
 @onready var hacking_status: Node2D = $HackingStatus
+@onready var countdown: Label = $UI/Layout/Countdown
 
 var servers:= Array([], TYPE_OBJECT, "Node2D", null)
 var connections := Array([], TYPE_OBJECT, "Node2D", null)
 
+var seconds_until_alert := 30.0
+var connection_seconds_elapsed := 0.0
+
 func _ready() -> void:
 	servers.resize(12)
 	load_level()
+
+func _process(delta: float) -> void:
+	connection_seconds_elapsed += delta
+	var clock_format = str(seconds_until_alert-connection_seconds_elapsed).pad_decimals(2).replace(".", ":") 
+	countdown.text = clock_format
 
 func load_level() -> void:
 	# create servers (nodes) and connections (edges)
