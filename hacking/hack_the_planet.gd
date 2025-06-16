@@ -22,8 +22,11 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	connection_seconds_elapsed += delta
-	var clock_format = str(seconds_until_alert-connection_seconds_elapsed).pad_decimals(2).replace(".", ":") 
-	countdown.text = clock_format
+	if connection_seconds_elapsed > seconds_until_alert:
+		_on_player_run_ended(false)
+	else:
+		var clock_format = str(seconds_until_alert-connection_seconds_elapsed).pad_zeros(2).pad_decimals(2).replace(".", ":")
+		countdown.text = clock_format
 
 func load_level() -> void:
 	# create servers (nodes) and connections (edges)
