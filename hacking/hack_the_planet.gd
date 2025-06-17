@@ -13,8 +13,10 @@ const GUARD = preload("res://hacking/Guard.tscn")
 var servers:= Array([], TYPE_OBJECT, "Node2D", null)
 var connections := Array([], TYPE_OBJECT, "Node2D", null)
 
-var seconds_until_alert := 30.0
+var seconds_until_alert := 300.0
 var connection_seconds_elapsed := 0.0
+
+var blackboard := Blackboard.new()
 
 func _ready() -> void:
 	servers.resize(12)
@@ -58,19 +60,29 @@ func load_level() -> void:
 	player.position = start_server.position
 	move_player_to(start_server)
 	
+	blackboard.set_var(&"servers", servers)
 	# add guard
-	var guard = GUARD.instantiate()
-	add_child(guard)
-	var options:Dictionary[int, Node2D] = {}
-	for edge in servers[9].edges:
-		options[edge] = servers[edge] 
-	guard.set_current_server(servers[9], options, player)
-	guard.connect("request_move_to_server", _on_guard_request_move)
+	var guard = add_guard(9)
 	
 	#add initial hints
 	HintManager.queue_hint(&"target_server", target)
 	HintManager.queue_hint(&"enemy_guard", guard)
 	HintManager.queue_hint(&"hack_move", player)
+
+func add_guard(p_server_key:int) -> Guard:
+	var guard = GUARD.instantiate()
+	add_child(guard)
+	guard.set_blackboard(blackboard)
+	var server = servers[p_server_key]
+	guard.set_current_server(server, build_options(server), player)
+	guard.connect("request_move_to_server", _on_guard_request_move)
+	return guard
+
+func build_options(server:Server) -> Dictionary[int, Node2D]:
+	var options:Dictionary[int, Node2D] = {}
+	for edge in server.edges:
+		options[edge] = servers[edge]
+	return options
 
 func add_server(id:int, server_position:Vector2, p_connections:Array[int]) -> void:
 	var server = SERVER.instantiate()
@@ -137,10 +149,8 @@ func _on_hint_hint_accept() -> void:
 func _on_player_focus_tween_finished() -> void:
 	get_tree().paused = false
 
-
 func _on_player_overclock_change(overclock_percentage: float) -> void:
 	overclock_label.text = "Overclock: {0}%".format([overclock_percentage])
-
 
 func _on_player_hack_started(server_key: int, target_key: int) -> void:
 	hacking_status.visible = true
@@ -149,14 +159,11 @@ func _on_player_hack_started(server_key: int, target_key: int) -> void:
 	var diff = target_pos - server_pos
 	hacking_status.position = target_pos - (diff/2)
 
-
 func _on_player_hack_ended() -> void:
 	hacking_status.visible = false
 
-
 func _on_player_hack_progress(percentage: float) -> void:
 	hacking_status.get_node("ProgressBar").value = ceil(percentage*100)
-
 
 func _on_player_add_trace(server_key: int) -> void:
 	servers[server_key].traces += 1
