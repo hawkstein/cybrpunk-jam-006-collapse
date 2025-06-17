@@ -9,3 +9,6 @@ var idx:int
 func draw_to(pos:Vector2) -> void:
 	line_2d.add_point(Vector2(0,0))
 	line_2d.add_point(to_local(pos))
+
+func is_connected_to(server:int) -> bool:
+	return parent == server or child == server

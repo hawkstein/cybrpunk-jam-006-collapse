@@ -14,6 +14,7 @@ signal overclock_change(overlock_percentage:float)
 signal hack_started(server_key:int, target_key:int)
 signal hack_progress(percentage:float)
 signal hack_ended
+signal add_trace(server_key:int)
 
 var current_server:Server
 var options:Dictionary[int, Node2D]
@@ -30,6 +31,11 @@ var hack_time := 5.0
 @export var default_hack_time := 5.0
 @export var hack_rate := 2.0
 @export var overclock_hack_rate := 4.0
+var pushes := 0
+var push_active := false
+var seconds_since_push_bonus : = 0.0
+@export var push_hack_bonus := 0.5
+@export var push_gain := 1
 
 func _ready() -> void:
 	_initialise_hsm()
@@ -78,10 +84,16 @@ func _on_hack_enter() -> void:
 func _on_hack_update(delta:float) -> void:
 	_check_overclock_toggle()
 	_update_overclock(delta)
+	_check_push_press()
+	_use_push_bonus(delta)
 	if overclocking:
 		hack_time -= overclock_hack_rate * delta
 	else:
 		hack_time -= hack_rate * delta
+	if push_active:
+		hack_time -= push_hack_bonus
+		push_active = false
+		add_trace.emit(selection_key)
 	if hack_time < 0:
 		hsm.dispatch(&"hack_finished")
 		hack_ended.emit()
@@ -92,6 +104,17 @@ func _on_hack_update(delta:float) -> void:
 func _on_move_update(delta:float) -> void:
 	_check_overclock_toggle()
 	_update_overclock(delta)
+
+func _check_push_press() -> void:
+	if Input.is_action_just_released("push"):
+		pushes += push_gain
+
+func _use_push_bonus(delta:float) -> void:
+	seconds_since_push_bonus += delta
+	if pushes > 0 and seconds_since_push_bonus > 0.3:
+		push_active = true
+		seconds_since_push_bonus = 0
+		pushes -= 1
 
 func _check_overclock_toggle() -> void:
 	if Input.is_action_just_released("overclock"):

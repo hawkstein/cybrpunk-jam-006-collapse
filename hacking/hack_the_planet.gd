@@ -109,7 +109,9 @@ func move_guard_to(guard:Guard, server:Server) -> void:
 	guard.set_current_server(server, options, player)
 
 func _on_player_move_to_selected_server(key: int) -> void:
-	move_player_to(servers[key])
+	var server = servers[key]
+	move_player_to(server)
+	server.spawn_traces()
 
 func _on_guard_request_move(guard:Guard, key:int) -> void:
 	move_guard_to(guard, servers[key])
@@ -154,3 +156,7 @@ func _on_player_hack_ended() -> void:
 
 func _on_player_hack_progress(percentage: float) -> void:
 	hacking_status.get_node("ProgressBar").value = ceil(percentage*100)
+
+
+func _on_player_add_trace(server_key: int) -> void:
+	servers[server_key].traces += 1

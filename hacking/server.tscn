@@ -6,5 +6,7 @@
 [node name="Server" type="Node2D"]
 script = ExtResource("1_nxwuo")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Rack" type="Sprite2D" parent="."]
 texture = ExtResource("2_cxoxq")
+
+[node name="Traces" type="Node2D" parent="."]

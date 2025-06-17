@@ -90,6 +90,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
+[connection signal="add_trace" from="Player" to="." method="_on_player_add_trace"]
 [connection signal="focus_tween_finished" from="Player" to="." method="_on_player_focus_tween_finished"]
 [connection signal="hack_ended" from="Player" to="." method="_on_player_hack_ended"]
 [connection signal="hack_progress" from="Player" to="." method="_on_player_hack_progress"]
