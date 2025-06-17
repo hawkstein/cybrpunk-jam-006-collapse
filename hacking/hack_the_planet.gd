@@ -19,7 +19,6 @@ var connection_seconds_elapsed := 0.0
 var blackboard := Blackboard.new()
 
 func _ready() -> void:
-	servers.resize(12)
 	load_level()
 
 func _process(delta: float) -> void:
@@ -31,49 +30,68 @@ func _process(delta: float) -> void:
 		countdown.text = clock_format
 
 func load_level() -> void:
-	# create servers (nodes) and connections (edges)
-	# start node
-	add_server(1, Vector2(576,600), [2,3,4])
-	# layer 1: +128px up
-	add_server(2, Vector2(448,472), [5,3,1])
-	add_server(3, Vector2(576,472), [2,6,4])
-	add_server(4, Vector2(704,472), [1,3,7])
-	# layer 2: +128px up
-	add_server(5, Vector2(448,344), [8,2])
-	add_server(6, Vector2(576,344), [9,3])
-	add_server(7, Vector2(704,344), [10,4])
-	# layer 3: +128px again
-	add_server(8, Vector2(448,216), [5,9])
-	add_server(9, Vector2(576,216), [6,8,11,10])
-	add_server(10, Vector2(704,216), [9,7])
-	# target layer
-	add_server(11, Vector2(576,88), [9])
-	var target = servers[11]
+	load_level_one()
+	var start_server = servers[0]
+	# for init, manually set the position before the game gets paused
+	player.position = start_server.position
+	move_player_to(start_server)
+	blackboard.set_var(&"servers", servers)
+
+func load_level_one() -> void:
+	var start = Vector2(576,600)
+	var y_shift =  Vector2(0, -128)
+	var start_server = add_server(start, [1,2,3])
+	var layer_one = build_layer(start + y_shift, start_server.id)
+	var col_one_id = build_column(layer_one[0].position + y_shift, layer_one[0].id, 2)
+	var col_two_id = build_column(layer_one[1].position + y_shift, layer_one[1].id, 2)
+	var col_three_id = build_column(layer_one[2].position + y_shift, layer_one[2].id, 2)
+	build_edges(col_one_id, col_two_id)
+	build_edges(col_two_id, col_three_id)
+	var target = add_server(servers[col_two_id].position + y_shift, [col_two_id])
 	target.is_target = true
 	
 	for server in servers:
-		if server:
-			add_connections(server.id, server.edges)
-	# setup user (player)
-	# for init, manually set the position before the game gets paused
-	var start_server = servers[1]
-	player.position = start_server.position
-	move_player_to(start_server)
-	
-	blackboard.set_var(&"servers", servers)
+		add_connections(server.id, server.edges)
 	# add guard
-	var guard = add_guard(9)
+	var guard = add_guard(col_two_id)
 	
 	#add initial hints
 	HintManager.queue_hint(&"target_server", target)
 	HintManager.queue_hint(&"enemy_guard", guard)
 	HintManager.queue_hint(&"hack_move", player)
 
+func build_layer(origin:Vector2, parent:int) -> Array[Server]:
+	var x_shift = 128
+	var left = add_server(origin + Vector2(-x_shift, 0), [parent])
+	var mid = add_server(origin, [parent])
+	var right = add_server(origin + Vector2(x_shift, 0), [parent])
+	left.edges.append(mid.id)
+	mid.edges.append_array([left.id, right.id])
+	right.edges.append(right.id)
+	return [left,mid,right]
+
+func build_column(origin:Vector2, parent:int, rows:int) -> int:
+	var y_shift = -128
+	var edge = parent
+	var row
+	for i in range(rows):
+		row = add_server(origin + Vector2(0, i * y_shift), [edge])
+		servers[edge].edges.append(row.id)
+		edge = row.id
+	return row.id
+
+func build_edges(key_one:int, key_two:int) -> void:
+	var server_one:Server = servers[key_one]
+	var server_two:Server = servers[key_two]
+	server_one.edges.append(key_two)
+	server_two.edges.append(key_one)
+
 func add_guard(p_server_key:int) -> Guard:
 	var guard = GUARD.instantiate()
 	add_child(guard)
 	guard.set_blackboard(blackboard)
 	var server = servers[p_server_key]
+	print("guard server: {0}".format([server.id]))
 	guard.set_current_server(server, build_options(server), player)
 	guard.connect("request_move_to_server", _on_guard_request_move)
 	return guard
@@ -84,13 +102,14 @@ func build_options(server:Server) -> Dictionary[int, Node2D]:
 		options[edge] = servers[edge]
 	return options
 
-func add_server(id:int, server_position:Vector2, p_connections:Array[int]) -> void:
+func add_server(server_position:Vector2, p_connections:Array[int]) -> Server:
 	var server = SERVER.instantiate()
-	server.id = id
-	servers[id] = server
+	server.id = servers.size()
+	servers.append(server)
 	server.position = server_position
 	server.edges = p_connections
 	add_child(server)
+	return server
 
 func add_connections(server_id:int, p_connections:Array[int]) -> void:
 	for target_id in p_connections:

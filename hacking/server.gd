@@ -16,7 +16,6 @@ func has_connection(connection_id:int) -> bool:
 	return connections.any(func(edge:Connection): return edge.is_connected_to(connection_id))
 
 func spawn_traces() -> void:
-	print("Server {1} has {0} traces".format([traces, id]))
 	# add trace nodes to the server trace group node 
 	var missing := traces - trace_group.get_child_count()
 	if  missing > 0:

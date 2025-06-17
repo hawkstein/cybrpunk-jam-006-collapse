@@ -18,15 +18,15 @@ custom_name = "Check if hunting"
 [sub_resource type="BTConsolePrint" id="BTConsolePrint_bvufh"]
 text = "hunting..."
 
-[sub_resource type="BTAction" id="BTAction_xpt8l"]
-script = ExtResource("1_bllos")
-
 [sub_resource type="BTWait" id="BTWait_mtd04"]
 duration = 1.5
 
+[sub_resource type="BTAction" id="BTAction_xpt8l"]
+script = ExtResource("1_bllos")
+
 [sub_resource type="BTSequence" id="BTSequence_xnqya"]
 custom_name = "Hunt player"
-children = [SubResource("BTCheckAgentProperty_iwnsd"), SubResource("BTConsolePrint_bvufh"), SubResource("BTAction_xpt8l"), SubResource("BTWait_mtd04")]
+children = [SubResource("BTCheckAgentProperty_iwnsd"), SubResource("BTConsolePrint_bvufh"), SubResource("BTWait_mtd04"), SubResource("BTAction_xpt8l")]
 
 [sub_resource type="BTCondition" id="BTCondition_ojx1q"]
 custom_name = "Check for traces"
@@ -52,15 +52,15 @@ children = [SubResource("BTCondition_ojx1q"), SubResource("BTConsolePrint_sd8pu"
 [sub_resource type="BTConsolePrint" id="BTConsolePrint_ffpwn"]
 text = "patrolling"
 
-[sub_resource type="BTAction" id="BTAction_aqm1j"]
-script = ExtResource("1_bllos")
-
 [sub_resource type="BTWait" id="BTWait_mrdxm"]
 duration = 3.0
 
+[sub_resource type="BTAction" id="BTAction_aqm1j"]
+script = ExtResource("1_bllos")
+
 [sub_resource type="BTSequence" id="BTSequence_hhoww"]
 custom_name = "Patrol servers"
-children = [SubResource("BTConsolePrint_ffpwn"), SubResource("BTAction_aqm1j"), SubResource("BTWait_mrdxm")]
+children = [SubResource("BTConsolePrint_ffpwn"), SubResource("BTWait_mrdxm"), SubResource("BTAction_aqm1j")]
 
 [sub_resource type="BTSelector" id="BTSelector_aqm1j"]
 custom_name = "Patrol and check"
