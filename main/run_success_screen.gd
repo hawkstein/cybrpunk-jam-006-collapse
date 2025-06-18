@@ -2,6 +2,7 @@ extends Control
 
 func _ready() -> void:
 	get_tree().paused = false
+	Director.advance_level()
 
 func _on_start_button_pressed() -> void:
 	var fade_opts = SceneManager.create_options()

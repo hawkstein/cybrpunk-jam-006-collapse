@@ -30,6 +30,7 @@ func _process(delta: float) -> void:
 		countdown.text = clock_format
 
 func load_level() -> void:
+	print("loading level {0}...".format([Director.current_level]))
 	load_level_one()
 	var start_server = servers[0]
 	# for init, manually set the position before the game gets paused
