@@ -3,14 +3,16 @@ extends Node
 
 var save_path := "user://game_data.json"
 var current_level := 0
+var max_level := 3
 
 func _ready() -> void:
 	SceneManager.process_mode = Node.PROCESS_MODE_ALWAYS
 	load_game_data()
 
 func advance_level() -> void:
-	current_level += 1
-	save_game_data()
+	if current_level < max_level:
+		current_level += 1
+		save_game_data()
 
 func save_game_data() -> void:
 	var data := { "level": current_level }

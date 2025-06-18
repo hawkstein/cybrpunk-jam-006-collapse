@@ -13,10 +13,14 @@ const GUARD = preload("res://hacking/Guard.tscn")
 var servers:= Array([], TYPE_OBJECT, "Node2D", null)
 var connections := Array([], TYPE_OBJECT, "Node2D", null)
 
-var seconds_until_alert := 300.0
+var seconds_until_alert := 60.0
 var connection_seconds_elapsed := 0.0
 
 var blackboard := Blackboard.new()
+
+var levels:= [load_level_zero, load_level_one, load_level_two, load_level_three]
+
+var in_game_hints:Dictionary[int, StringName] = {} 
 
 func _ready() -> void:
 	load_level()
@@ -31,14 +35,62 @@ func _process(delta: float) -> void:
 
 func load_level() -> void:
 	print("loading level {0}...".format([Director.current_level]))
-	load_level_one()
+	var level_loader:Callable = levels[Director.current_level]
+	level_loader.call()
 	var start_server = servers[0]
-	# for init, manually set the position before the game gets paused
+	# for init, manually set the position as the game is potentially paused
 	player.position = start_server.position
 	move_player_to(start_server)
 	blackboard.set_var(&"servers", servers)
 
+func load_level_zero() -> void:
+	var start = Vector2(576,600)
+	var y_shift =  Vector2(0, -128)
+	var start_server = add_server(start, [1,2,3])
+	var layer_one = build_layer(start + y_shift, start_server.id)
+	var col_one_id = build_column(layer_one[0].position + y_shift, layer_one[0].id, 2)
+	var col_two_id = build_column(layer_one[1].position + y_shift, layer_one[1].id, 2)
+	var col_three_id = build_column(layer_one[2].position + y_shift, layer_one[2].id, 2)
+	build_edges(col_one_id, col_two_id)
+	build_edges(col_two_id, col_three_id)
+	var target = add_server(servers[col_two_id].position + y_shift, [])
+	build_edges(col_two_id, target.id)
+	target.is_target = true
+	
+	for server in servers:
+		add_connections(server.id, server.edges)
+	
+	HintManager.queue_hint(&"runner", player)
+	HintManager.queue_hint(&"target_server", target)
+	HintManager.queue_hint(&"how_to", player)
+	
+	in_game_hints.set(1, &"hack_move")
+	in_game_hints.set(2, &"hack_move")
+	in_game_hints.set(3, &"hack_move")
+
 func load_level_one() -> void:
+	var start = Vector2(576,600)
+	var y_shift =  Vector2(0, -128)
+	var start_server = add_server(start, [1,2,3])
+	var layer_one = build_layer(start + y_shift, start_server.id)
+	var col_one_id = build_column(layer_one[0].position + y_shift, layer_one[0].id, 2)
+	var col_two_id = build_column(layer_one[1].position + y_shift, layer_one[1].id, 2)
+	var col_three_id = build_column(layer_one[2].position + y_shift, layer_one[2].id, 2)
+	build_edges(col_one_id, col_two_id)
+	build_edges(col_two_id, col_three_id)
+	var target = add_server(servers[col_two_id].position + y_shift, [])
+	build_edges(col_two_id, target.id)
+	target.is_target = true
+	
+	for server in servers:
+		add_connections(server.id, server.edges)
+
+	HintManager.queue_hint(&"overclock", servers[2])
+	in_game_hints.set(4, &"cooling")
+	in_game_hints.set(5, &"cooling")
+	in_game_hints.set(6, &"cooling")
+
+func load_level_two() -> void:
 	var start = Vector2(576,600)
 	var y_shift =  Vector2(0, -128)
 	var start_server = add_server(start, [1,2,3])
@@ -58,9 +110,28 @@ func load_level_one() -> void:
 	var guard = add_guard(col_two_id)
 	
 	#add initial hints
-	HintManager.queue_hint(&"target_server", target)
+	HintManager.queue_hint(&"target_server_reminder", target)
 	HintManager.queue_hint(&"enemy_guard", guard)
-	HintManager.queue_hint(&"hack_move", player)
+
+func load_level_three() -> void:
+	var start = Vector2(576,600)
+	var y_shift =  Vector2(0, -128)
+	var start_server = add_server(start, [1,2,3])
+	var layer_one = build_layer(start + y_shift, start_server.id)
+	var col_one_id = build_column(layer_one[0].position + y_shift, layer_one[0].id, 4)
+	var col_two_id = build_column(layer_one[1].position + y_shift, layer_one[1].id, 4)
+	var col_three_id = build_column(layer_one[2].position + y_shift, layer_one[2].id, 4)
+	build_edges(col_one_id, col_two_id)
+	build_edges(col_two_id, col_three_id)
+	var target = add_server(servers[col_two_id].position + y_shift, [])
+	build_edges(col_two_id, target.id)
+	target.is_target = true
+	
+	for server in servers:
+		add_connections(server.id, server.edges)
+	# add guards
+	add_guard(col_two_id)
+	add_guard(col_three_id)
 
 func build_layer(origin:Vector2, parent:int) -> Array[Server]:
 	var x_shift = 128
@@ -145,6 +216,8 @@ func _on_player_move_to_selected_server(key: int) -> void:
 	var server = servers[key]
 	move_player_to(server)
 	server.spawn_traces()
+	if in_game_hints.has(key):
+		HintManager.queue_hint(in_game_hints.get(key), player)
 
 func _on_guard_request_move(guard:Guard, key:int) -> void:
 	move_guard_to(guard, servers[key])
@@ -158,6 +231,8 @@ func _on_player_run_ended(success:bool) -> void:
 	var fade_opts = SceneManager.create_options(0.5)
 	if success:
 		tween.tween_callback(func():
+			if Director.current_level == Director.max_level:
+				print("You completed the game!")
 			SceneManager.change_scene("run_success_screen", fade_opts , fade_opts, no_click_opts)).set_delay(1)
 	else:
 		var slow_fade_opts = SceneManager.create_options(2)
