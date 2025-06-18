@@ -26,6 +26,10 @@ func _ready() -> void:
 	hints.set(&"overclock", Hint.new("Hit [D] to overclock. This speeds up hacking until you overheat"))
 	hints.set(&"cooling", Hint.new("When not overclocking, you will slowly cool down"))
 
+func reset() -> void:
+	for key in hints:
+		hints.get(key).shown = false
+
 func queue_hint(p_key:StringName, p_target:Node2D) -> void:
 	var hint = hints.get(p_key)
 	if hint and not hint.shown:

@@ -17,6 +17,11 @@ func advance_level() -> void:
 		current_level += 1
 		save_game_data()
 
+func reset_levels() -> void:
+	HintManager.reset()
+	current_level = 0
+	save_game_data()
+
 func save_game_data() -> void:
 	var data := { "level": current_level }
 	var json_string := JSON.stringify(data)

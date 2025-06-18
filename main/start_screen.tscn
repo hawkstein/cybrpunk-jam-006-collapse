@@ -264,5 +264,16 @@ libraries = {
 }
 autoplay = "intro"
 
+[node name="ResetButton" type="Button" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 468.0
+offset_top = 400.0
+offset_right = 717.0
+offset_bottom = 440.0
+theme = ExtResource("2_l0jeu")
+text = "Start again"
+
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="pressed" from="ResetButton" to="." method="_on_button_pressed"]
