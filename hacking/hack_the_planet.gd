@@ -48,7 +48,8 @@ func load_level_one() -> void:
 	var col_three_id = build_column(layer_one[2].position + y_shift, layer_one[2].id, 2)
 	build_edges(col_one_id, col_two_id)
 	build_edges(col_two_id, col_three_id)
-	var target = add_server(servers[col_two_id].position + y_shift, [col_two_id])
+	var target = add_server(servers[col_two_id].position + y_shift, [])
+	build_edges(col_two_id, target.id)
 	target.is_target = true
 	
 	for server in servers:
@@ -68,7 +69,7 @@ func build_layer(origin:Vector2, parent:int) -> Array[Server]:
 	var right = add_server(origin + Vector2(x_shift, 0), [parent])
 	left.edges.append(mid.id)
 	mid.edges.append_array([left.id, right.id])
-	right.edges.append(right.id)
+	right.edges.append(mid.id)
 	return [left,mid,right]
 
 func build_column(origin:Vector2, parent:int, rows:int) -> int:
