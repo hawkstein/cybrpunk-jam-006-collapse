@@ -46,4 +46,4 @@ func load_game_data() -> void:
 	current_level = data.get("level", 0)
 
 func get_description() -> String:
-	return scenarios.descriptions[current_level]
+	return scenarios.descriptions[current_level - last_tutorial]
