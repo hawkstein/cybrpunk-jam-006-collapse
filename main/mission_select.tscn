@@ -25,6 +25,7 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_l8ouq")
 
 [node name="RunnerLabel" type="Label" parent="."]
+layout_mode = 0
 offset_left = 374.0
 offset_top = 85.0
 offset_right = 743.0
@@ -39,6 +40,7 @@ Initialise run?
 Y/N?"
 
 [node name="MissionLabel" type="Label" parent="."]
+layout_mode = 0
 offset_left = 374.0
 offset_top = 243.0
 offset_right = 776.0
@@ -50,6 +52,7 @@ text = "Description details go here"
 autowrap_mode = 2
 
 [node name="StartButton" type="Button" parent="."]
+layout_mode = 0
 offset_left = 378.0
 offset_top = 415.0
 offset_right = 568.0

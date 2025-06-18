@@ -21,6 +21,7 @@ SceneManager="*res://addons/scene_manager/scene_manager.tscn"
 Scenes="*res://addons/scene_manager/scenes.gd"
 Director="*res://main/director.gd"
 HintManager="*res://main/hint_manager.gd"
+Orchestra="*res://main/orchestra.tscn"
 
 [display]
 

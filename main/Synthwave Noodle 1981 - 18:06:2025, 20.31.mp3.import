@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cxycralxoeu7l"
+path="res://.godot/imported/Synthwave Noodle 1981 - 18:06:2025, 20.31.mp3-c05d5c33a8047b963db7bc24654b0b52.mp3str"
+
+[deps]
+
+source_file="res://main/Synthwave Noodle 1981 - 18:06:2025, 20.31.mp3"
+dest_files=["res://.godot/imported/Synthwave Noodle 1981 - 18:06:2025, 20.31.mp3-c05d5c33a8047b963db7bc24654b0b52.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

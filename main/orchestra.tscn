@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://bwtnunpvfmi30"]
+
+[ext_resource type="AudioStream" uid="uid://cxycralxoeu7l" path="res://main/Synthwave Noodle 1981 - 18:06:2025, 20.31.mp3" id="1_7vpvh"]
+[ext_resource type="Script" uid="uid://bgd2jguiv5xgc" path="res://main/orchestra.gd" id="1_oo4xo"]
+
+[node name="Orchestra" type="Node2D"]
+process_mode = 3
+script = ExtResource("1_oo4xo")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_7vpvh")
+parameters/looping = true
