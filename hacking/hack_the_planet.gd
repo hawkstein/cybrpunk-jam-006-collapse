@@ -13,12 +13,12 @@ const GUARD = preload("res://hacking/Guard.tscn")
 var servers:= Array([], TYPE_OBJECT, "Node2D", null)
 var connections := Array([], TYPE_OBJECT, "Node2D", null)
 
-var seconds_until_alert := 60.0
+var seconds_until_alert := 120.0
 var connection_seconds_elapsed := 0.0
 
 var blackboard := Blackboard.new()
 
-var levels:= [load_level_zero, load_level_one, load_level_two, load_level_three]
+var levels:= [load_level_zero, load_level_one, load_level_two, load_level_three, load_level_three, load_level_three, load_level_three, load_level_three]
 
 var in_game_hints:Dictionary[int, StringName] = {} 
 
@@ -30,7 +30,10 @@ func _process(delta: float) -> void:
 	if connection_seconds_elapsed > seconds_until_alert:
 		_on_player_run_ended(false)
 	else:
-		var clock_format = str(seconds_until_alert-connection_seconds_elapsed).pad_zeros(2).pad_decimals(2).replace(".", ":")
+		var remaining = seconds_until_alert-connection_seconds_elapsed
+		var minutes = str(floori(remaining/60)).pad_zeros(2)
+		var seconds = str(fmod(remaining, 60)).pad_decimals(2).replace(".", ":")
+		var clock_format = minutes+":"+seconds
 		countdown.text = clock_format
 
 func load_level() -> void:

@@ -1,0 +1,60 @@
+[gd_scene load_steps=4 format=3 uid="uid://doayewl5oykvl"]
+
+[ext_resource type="Theme" uid="uid://bgpm23y06s5df" path="res://main_theme.tres" id="1_q5xvs"]
+[ext_resource type="Script" uid="uid://cgtl3nfro8208" path="res://main/mission_select.gd" id="1_wa43r"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l8ouq"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="MissionSelect" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wa43r")
+
+[node name="Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_l8ouq")
+
+[node name="RunnerLabel" type="Label" parent="."]
+offset_left = 374.0
+offset_top = 85.0
+offset_right = 743.0
+offset_bottom = 208.0
+theme = ExtResource("1_q5xvs")
+theme_override_colors/font_color = Color(0.984314, 0.94902, 0.211765, 1)
+theme_override_constants/line_spacing = 9
+theme_override_font_sizes/font_size = 24
+text = "Runner-256
+Mission description
+Initialise run?
+Y/N?"
+
+[node name="MissionLabel" type="Label" parent="."]
+offset_left = 374.0
+offset_top = 243.0
+offset_right = 776.0
+offset_bottom = 521.0
+theme = ExtResource("1_q5xvs")
+theme_override_colors/font_color = Color(0.984314, 0.94902, 0.211765, 1)
+theme_override_font_sizes/font_size = 16
+text = "Description details go here"
+autowrap_mode = 2
+
+[node name="StartButton" type="Button" parent="."]
+offset_left = 378.0
+offset_top = 415.0
+offset_right = 568.0
+offset_bottom = 455.0
+theme = ExtResource("1_q5xvs")
+text = "Start [Y]"
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]

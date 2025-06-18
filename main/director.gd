@@ -3,7 +3,10 @@ extends Node
 
 var save_path := "user://game_data.json"
 var current_level := 0
-var max_level := 3
+var last_tutorial : = 2
+var max_level := 7
+
+var scenarios := Scenarios.new()
 
 func _ready() -> void:
 	SceneManager.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -41,3 +44,6 @@ func load_game_data() -> void:
 	
 	var data:Dictionary = json.data
 	current_level = data.get("level", 0)
+
+func get_description() -> String:
+	return scenarios.descriptions[current_level]
