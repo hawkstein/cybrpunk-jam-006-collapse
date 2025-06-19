@@ -1,8 +1,8 @@
 extends Control
-@onready var start_button: Button = $ButtonsVBox/StartButton
-@onready var reset_button: Button = $ButtonsVBox/ResetButton
+@onready var start_button: Button = $AnimatedPanel/Content/ButtonsVBox/StartButton
+@onready var reset_button: Button = $AnimatedPanel/Content/ButtonsVBox/ResetButton
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var buttons_v_box: VBoxContainer = $ButtonsVBox
+@onready var anim_panel: Control = $AnimatedPanel
 
 func _ready() -> void:
 	if Director.current_level > 0:
@@ -14,12 +14,10 @@ func _on_start_button_pressed() -> void:
 	_play_outro()
 
 func _play_outro() -> void:
-	buttons_v_box.visible = false
+	anim_panel.visible = false
 	animation_player.play(&"outro")
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
-	if anim_name == &"intro":
-		buttons_v_box.visible = true
 	if anim_name == &"outro":
 		animation_player.play(&"blurb")
 	if anim_name == &"blurb":

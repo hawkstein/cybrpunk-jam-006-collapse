@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://bk4ng8bhova7f"]
+[gd_scene load_steps=13 format=3 uid="uid://bk4ng8bhova7f"]
 
 [ext_resource type="Script" uid="uid://tlefmu1erhqy" path="res://main/start_screen.gd" id="1_86ffh"]
 [ext_resource type="Texture2D" uid="uid://glifqa3hqk5s" path="res://main/title.png" id="1_ywhhl"]
 [ext_resource type="Theme" uid="uid://bgpm23y06s5df" path="res://main_theme.tres" id="2_l0jeu"]
+[ext_resource type="PackedScene" uid="uid://0ox81rrs4nen" path="res://ui/animated_panel.tscn" id="4_1wrxs"]
 [ext_resource type="FontFile" uid="uid://wt66k3fampfe" path="res://PixelOperator8.ttf" id="4_eufv4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wywcg"]
@@ -221,7 +222,7 @@ texture = ExtResource("1_ywhhl")
 
 [node name="BlurbVBox" type="VBoxContainer" parent="."]
 visible = false
-custom_minimum_size = Vector2(360, 0)
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -238,9 +239,11 @@ alignment = 1
 custom_minimum_size = Vector2(360, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.984314, 0.94902, 0.211765, 1)
+theme_override_constants/line_spacing = 8
 theme_override_fonts/font = ExtResource("4_eufv4")
-theme_override_font_sizes/font_size = 36
-text = "The world is on fire"
+theme_override_font_sizes/font_size = 24
+text = "The world
+is on fire"
 horizontal_alignment = 1
 autowrap_mode = 2
 
@@ -248,9 +251,12 @@ autowrap_mode = 2
 custom_minimum_size = Vector2(360, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/line_spacing = 8
 theme_override_fonts/font = ExtResource("4_eufv4")
-theme_override_font_sizes/font_size = 36
-text = "Hack to a fairer future"
+theme_override_font_sizes/font_size = 24
+text = "Hack to
+a fairer
+future"
 horizontal_alignment = 1
 autowrap_mode = 2
 
@@ -260,7 +266,19 @@ libraries = {
 }
 autoplay = "intro"
 
-[node name="ButtonsVBox" type="VBoxContainer" parent="."]
+[node name="AnimatedPanel" parent="." instance=ExtResource("4_1wrxs")]
+offset_left = 28.0
+offset_top = 306.0
+offset_right = 328.0
+offset_bottom = 606.0
+delay = 1.2
+
+[node name="Content" type="Control" parent="AnimatedPanel"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ButtonsVBox" type="VBoxContainer" parent="AnimatedPanel/Content"]
 custom_minimum_size = Vector2(256, 0)
 layout_mode = 1
 anchors_preset = 8
@@ -268,30 +286,30 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -128.0
-offset_top = 36.0
-offset_right = 128.0
-offset_bottom = 204.0
+offset_left = 3.0
+offset_top = 45.0
+offset_right = 259.0
+offset_bottom = 213.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 24
 
-[node name="StartButton" type="Button" parent="ButtonsVBox"]
+[node name="StartButton" type="Button" parent="AnimatedPanel/Content/ButtonsVBox"]
 layout_mode = 2
 theme = ExtResource("2_l0jeu")
 text = "Start"
 
-[node name="ResetButton" type="Button" parent="ButtonsVBox"]
+[node name="ResetButton" type="Button" parent="AnimatedPanel/Content/ButtonsVBox"]
 layout_mode = 2
 theme = ExtResource("2_l0jeu")
 text = "Start again"
 
-[node name="OptionsButton" type="Button" parent="ButtonsVBox"]
+[node name="OptionsButton" type="Button" parent="AnimatedPanel/Content/ButtonsVBox"]
 layout_mode = 2
 theme = ExtResource("2_l0jeu")
 text = "Options"
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
-[connection signal="pressed" from="ButtonsVBox/StartButton" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="ButtonsVBox/ResetButton" to="." method="_on_button_pressed"]
-[connection signal="pressed" from="ButtonsVBox/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="AnimatedPanel/Content/ButtonsVBox/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="AnimatedPanel/Content/ButtonsVBox/ResetButton" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="AnimatedPanel/Content/ButtonsVBox/OptionsButton" to="." method="_on_options_button_pressed"]

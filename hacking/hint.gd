@@ -5,6 +5,8 @@ signal hint_accept
 @onready var camera: Camera2D = $CameraCentre/Camera2D
 @onready var hsm: LimboHSM = $LimboHSM
 @export var player:Node2D
+@onready var close_label: Label = $PanelContainer/MarginContainer/VBoxContainer/CloseLabel
+@onready var hint_label: Label = $PanelContainer/MarginContainer/VBoxContainer/HintLabel
 
 var tween:Tween
 var last_target:Node2D
@@ -42,8 +44,8 @@ func _on_focus_enter() -> void:
 	var hint = HintManager.pop_hint()
 	if hint:
 		visible = false
-		get_node("CloseLabel").visible = false
-		get_node("HintLabel").text = hint.label
+		close_label.modulate.a = 0
+		hint_label.text = hint.label
 		get_tree().paused = true
 		var distance_between = position - hint.target.position
 		position = hint.target.position
@@ -54,7 +56,7 @@ func _on_focus_enter() -> void:
 		tween.tween_property(camera, "position", Vector2(0,0), time).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN_OUT)
 		tween.tween_callback(func():
 			hsm.dispatch(&"display")
-			get_node("CloseLabel").visible = true)
+			close_label.modulate.a = 1.0)
 		var vt = create_tween()
 		vt.tween_callback(func(): visible = true).set_delay(time/2)
 		camera.make_current()

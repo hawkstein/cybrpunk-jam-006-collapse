@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bie2xiyc7oehq"]
+[gd_scene load_steps=4 format=3 uid="uid://bie2xiyc7oehq"]
 
 [ext_resource type="Script" uid="uid://bwnlyemtchhb8" path="res://main/run_failed_screen.gd" id="1_fhc71"]
 [ext_resource type="Theme" uid="uid://bgpm23y06s5df" path="res://main_theme.tres" id="1_x0hxb"]
+[ext_resource type="PackedScene" uid="uid://0ox81rrs4nen" path="res://ui/animated_panel.tscn" id="2_4bs3i"]
 
 [node name="RunFailedScreen" type="Control"]
 layout_mode = 3
@@ -21,12 +22,38 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_left = 27.0
-offset_top = 59.0
-offset_right = 312.0
-offset_bottom = 164.0
+[node name="AnimatedPanel" parent="." instance=ExtResource("2_4bs3i")]
+offset_left = 30.0
+offset_top = 60.0
+offset_right = 330.0
+offset_bottom = 360.0
+
+[node name="Content" type="Control" parent="AnimatedPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="AnimatedPanel/Content"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AnimatedPanel/Content/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="AnimatedPanel/Content/MarginContainer/VBoxContainer"]
+layout_mode = 2
 theme = ExtResource("1_x0hxb")
 theme_override_colors/font_color = Color(0.984314, 0.94902, 0.211765, 1)
 theme_override_font_sizes/font_size = 24
@@ -35,23 +62,15 @@ Retry?
 
 Y/N?"
 
-[node name="RetryButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 32.0
-offset_top = 205.0
-offset_right = 111.0
-offset_bottom = 245.0
+[node name="RetryButton" type="Button" parent="AnimatedPanel/Content/MarginContainer/VBoxContainer"]
+layout_mode = 2
 theme = ExtResource("1_x0hxb")
 text = "Yes"
 
-[node name="NoButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 32.0
-offset_top = 271.0
-offset_right = 90.0
-offset_bottom = 311.0
+[node name="NoButton" type="Button" parent="AnimatedPanel/Content/MarginContainer/VBoxContainer"]
+layout_mode = 2
 theme = ExtResource("1_x0hxb")
 text = "No"
 
-[connection signal="pressed" from="RetryButton" to="." method="_on_retry_button_pressed"]
-[connection signal="pressed" from="NoButton" to="." method="_on_no_button_pressed"]
+[connection signal="pressed" from="AnimatedPanel/Content/MarginContainer/VBoxContainer/RetryButton" to="." method="_on_retry_button_pressed"]
+[connection signal="pressed" from="AnimatedPanel/Content/MarginContainer/VBoxContainer/NoButton" to="." method="_on_no_button_pressed"]
