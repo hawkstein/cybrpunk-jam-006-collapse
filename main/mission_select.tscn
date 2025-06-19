@@ -26,14 +26,14 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_l8ouq")
 
 [node name="RunnerLabel" type="Label" parent="."]
 layout_mode = 0
-offset_left = 374.0
-offset_top = 85.0
-offset_right = 743.0
-offset_bottom = 208.0
+offset_left = 17.0
+offset_top = 40.0
+offset_right = 344.0
+offset_bottom = 163.0
 theme = ExtResource("1_q5xvs")
 theme_override_colors/font_color = Color(0.984314, 0.94902, 0.211765, 1)
 theme_override_constants/line_spacing = 9
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 18
 text = "Runner-256
 Mission description
 Initialise run?
@@ -41,10 +41,10 @@ Y/N?"
 
 [node name="MissionLabel" type="Label" parent="."]
 layout_mode = 0
-offset_left = 374.0
-offset_top = 243.0
-offset_right = 776.0
-offset_bottom = 521.0
+offset_left = 17.0
+offset_top = 198.0
+offset_right = 339.0
+offset_bottom = 476.0
 theme = ExtResource("1_q5xvs")
 theme_override_colors/font_color = Color(0.984314, 0.94902, 0.211765, 1)
 theme_override_font_sizes/font_size = 16
@@ -53,10 +53,10 @@ autowrap_mode = 2
 
 [node name="StartButton" type="Button" parent="."]
 layout_mode = 0
-offset_left = 378.0
-offset_top = 415.0
-offset_right = 568.0
-offset_bottom = 455.0
+offset_left = 20.0
+offset_top = 525.0
+offset_right = 210.0
+offset_bottom = 565.0
 theme = ExtResource("1_q5xvs")
 text = "Start [Y]"
 

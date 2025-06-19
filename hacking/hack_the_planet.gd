@@ -237,8 +237,9 @@ func _on_player_run_ended(success:bool) -> void:
 	if success:
 		tween.tween_callback(func():
 			if Director.current_level == Director.max_level:
-				print("You completed the game!")
-			SceneManager.change_scene("run_success_screen", fade_opts , fade_opts, no_click_opts)).set_delay(1)
+				SceneManager.change_scene("run_success_screen", fade_opts , fade_opts, no_click_opts)
+			else:
+				SceneManager.change_scene("run_success_screen", fade_opts , fade_opts, no_click_opts)).set_delay(1)
 	else:
 		var slow_fade_opts = SceneManager.create_options(2)
 		tween.tween_callback(func():

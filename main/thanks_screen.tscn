@@ -1,0 +1,62 @@
+[gd_scene load_steps=5 format=3 uid="uid://dnm6arhic5f6d"]
+
+[ext_resource type="FontFile" uid="uid://wt66k3fampfe" path="res://PixelOperator8.ttf" id="1_g5ran"]
+[ext_resource type="Script" uid="uid://dfx11lr4ddit3" path="res://main/thanks_screen.gd" id="1_t1r6a"]
+[ext_resource type="Theme" uid="uid://bgpm23y06s5df" path="res://main_theme.tres" id="2_rdskk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rdskk"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="ThanksScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_t1r6a")
+
+[node name="Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rdskk")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 0
+offset_left = 15.0
+offset_top = 44.0
+offset_right = 345.0
+offset_bottom = 536.0
+theme_override_constants/separation = 40
+
+[node name="CompleteLabel" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(330, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_g5ran")
+theme_override_font_sizes/font_size = 24
+text = "That's the end! Well done!"
+autowrap_mode = 2
+
+[node name="MessageLabel" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(330, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_g5ran")
+theme_override_font_sizes/font_size = 24
+text = "Thanks for playing,
+you made it past the final level
+and did some good in a
+world of winners and losers
+from the collapse"
+autowrap_mode = 2
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_rdskk")
+text = "Start Screen"
+
+[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_button_pressed"]

@@ -20,8 +20,8 @@ z_index = 1
 z_index = 2
 layout_mode = 3
 anchors_preset = 0
-offset_right = 1152.0
-offset_bottom = 648.0
+offset_right = 361.0
+offset_bottom = 640.0
 
 [node name="Hint" parent="Tutorial" node_paths=PackedStringArray("player") instance=ExtResource("3_5k5bl")]
 process_mode = 3

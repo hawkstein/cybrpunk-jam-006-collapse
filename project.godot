@@ -25,7 +25,15 @@ Orchestra="*res://main/orchestra.tscn"
 
 [display]
 
+window/size/viewport_width=360
+window/size/viewport_height=640
+window/size/resizable=false
+window/size/window_width_override=720
+window/size/window_height_override=1280
+window/stretch/mode="viewport"
+window/stretch/aspect="keep_width"
 window/stretch/scale_mode="integer"
+window/dpi/allow_hidpi=false
 
 [editor_plugins]
 

@@ -23,7 +23,7 @@ func reset_levels() -> void:
 	save_game_data()
 
 func save_game_data() -> void:
-	var data := { "level": current_level }
+	var data := { "level": current_level, "bg_volume": Orchestra.max_bg_volume }
 	var json_string := JSON.stringify(data)
 	var file_access := FileAccess.open(save_path, FileAccess.WRITE)
 	if not file_access:
@@ -49,6 +49,7 @@ func load_game_data() -> void:
 	
 	var data:Dictionary = json.data
 	current_level = data.get("level", 0)
+	Orchestra.max_bg_volume = data.get("bg_volume", Orchestra.max_bg_volume)
 
 func get_description() -> String:
 	return scenarios.descriptions[current_level - last_tutorial]

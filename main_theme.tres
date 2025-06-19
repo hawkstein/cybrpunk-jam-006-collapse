@@ -1,6 +1,9 @@
-[gd_resource type="Theme" load_steps=5 format=3 uid="uid://bgpm23y06s5df"]
+[gd_resource type="Theme" load_steps=10 format=3 uid="uid://bgpm23y06s5df"]
 
 [ext_resource type="FontFile" uid="uid://wt66k3fampfe" path="res://PixelOperator8.ttf" id="1_470mv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_52mx2"]
+bg_color = Color(0.984314, 0.94902, 0.211765, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a2l2q"]
 bg_color = Color(0, 0, 0, 1)
@@ -12,6 +15,23 @@ content_margin_right = 8.0
 content_margin_bottom = 8.0
 bg_color = Color(0.984314, 0.94902, 0.211765, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_466ly"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.984314, 0.94902, 0.211765, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0omi4"]
+bg_color = Color(0.984314, 0.94902, 0.211765, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_58jnp"]
+bg_color = Color(0.984314, 0.733333, 0.211765, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_466ly"]
+thickness = 20
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gsqoc"]
 bg_color = Color(1, 1, 1, 1)
 border_width_left = 2
@@ -22,11 +42,17 @@ border_color = Color(0.905882, 0.835294, 0, 1)
 
 [resource]
 Button/colors/font_color = Color(0, 0, 0, 1)
+Button/colors/font_focus_color = Color(0, 0, 0, 1)
 Button/colors/font_hover_color = Color(0.984314, 0.94902, 0.211765, 1)
 Button/font_sizes/font_size = 24
 Button/fonts/font = ExtResource("1_470mv")
+Button/styles/focus = SubResource("StyleBoxFlat_52mx2")
 Button/styles/hover = SubResource("StyleBoxFlat_a2l2q")
 Button/styles/normal = SubResource("StyleBoxFlat_470mv")
+Button/styles/pressed = SubResource("StyleBoxFlat_466ly")
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_0omi4")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_58jnp")
+HSlider/styles/slider = SubResource("StyleBoxLine_466ly")
 Label/colors/font_color = Color(0, 0, 0, 1)
 Label/fonts/font = ExtResource("1_470mv")
 Panel/styles/panel = SubResource("StyleBoxFlat_gsqoc")

@@ -1,18 +1,25 @@
 extends Control
-@onready var start_button: Button = $StartButton
-@onready var reset_button: Button = $ResetButton
+@onready var start_button: Button = $ButtonsVBox/StartButton
+@onready var reset_button: Button = $ButtonsVBox/ResetButton
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var buttons_v_box: VBoxContainer = $ButtonsVBox
+
+func _ready() -> void:
+	if Director.current_level > 0:
+		start_button.text = "Resume"
+	else:
+		reset_button.visible = false
 
 func _on_start_button_pressed() -> void:
-	start_button.visible = false
+	_play_outro()
+
+func _play_outro() -> void:
+	buttons_v_box.visible = false
 	animation_player.play(&"outro")
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == &"intro":
-		start_button.visible = true
-		if Director.current_level > 0:
-			start_button.text = "Resume"
-			reset_button.visible = true
+		buttons_v_box.visible = true
 	if anim_name == &"outro":
 		animation_player.play(&"blurb")
 	if anim_name == &"blurb":
@@ -22,6 +29,10 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 
 func _on_button_pressed() -> void:
 	Director.reset_levels()
-	reset_button.visible = false
-	start_button.visible = false
-	animation_player.play(&"outro")
+	_play_outro()
+
+
+func _on_options_button_pressed() -> void:
+	var fade_opts = SceneManager.create_options()
+	var no_click_opts = SceneManager.create_general_options(Color(0,0,0), 0, false)
+	SceneManager.change_scene("options_screen", fade_opts , fade_opts, no_click_opts)

@@ -34,6 +34,7 @@ script = ExtResource("2_aqm1j")
 
 [sub_resource type="BTConsolePrint" id="BTConsolePrint_sd8pu"]
 text = "traces found!"
+_enabled = false
 
 [sub_resource type="BBVariant" id="BBVariant_5djcd"]
 type = 1
@@ -51,6 +52,7 @@ children = [SubResource("BTCondition_ojx1q"), SubResource("BTConsolePrint_sd8pu"
 
 [sub_resource type="BTConsolePrint" id="BTConsolePrint_ffpwn"]
 text = "patrolling"
+_enabled = false
 
 [sub_resource type="BTWait" id="BTWait_mrdxm"]
 duration = 3.0
