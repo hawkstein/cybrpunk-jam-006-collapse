@@ -1,14 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://ceddgpun5bi3i"]
+[gd_scene load_steps=4 format=3 uid="uid://ceddgpun5bi3i"]
 
 [ext_resource type="Script" uid="uid://f5sbahlsr124" path="res://hacking/player.gd" id="1_q1plw"]
 [ext_resource type="Texture2D" uid="uid://bgayo6alcsnsk" path="res://hacking/Pointer.png" id="2_ka2o4"]
 [ext_resource type="Texture2D" uid="uid://dattgm5lpdu6d" path="res://hacking/Outline.png" id="2_ljtp2"]
-[ext_resource type="Texture2D" uid="uid://d1j4rplp0yoks" path="res://hacking/Player.png" id="4_p0p7v"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ka2o4"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p0p7v"]
-bg_color = Color(0.984314, 0.94902, 0.211765, 1)
 
 [node name="Player" type="Node2D"]
 script = ExtResource("1_q1plw")
@@ -22,27 +16,6 @@ texture = ExtResource("2_ljtp2")
 position = Vector2(-43, 0)
 rotation = -1.5708
 texture = ExtResource("2_ka2o4")
-
-[node name="UserSprite" type="Sprite2D" parent="."]
-position = Vector2(36, 0)
-texture = ExtResource("4_p0p7v")
-
-[node name="OverclockProgressBar" type="ProgressBar" parent="."]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 17.0
-offset_top = -3.0
-offset_right = 54.0
-offset_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/background = SubResource("StyleBoxEmpty_ka2o4")
-theme_override_styles/fill = SubResource("StyleBoxFlat_p0p7v")
-step = 1.0
-show_percentage = false
 
 [node name="Camera2D" type="Camera2D" parent="."]
 

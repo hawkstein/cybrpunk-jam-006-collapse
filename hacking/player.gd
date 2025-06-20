@@ -5,7 +5,6 @@ extends Node2D
 @onready var selector: Node2D = $Selector
 @onready var camera: Camera2D = $Camera2D
 @onready var outline: Sprite2D = $OutlineSprite
-@onready var overclock_progress_bar: ProgressBar = $OverclockProgressBar
 
 signal move_to_selected_server(key:int)
 signal run_ended(success:bool)
@@ -131,7 +130,6 @@ func _update_overclock(delta:float) -> void:
 		overclocking = false
 	if previous != overclock:
 		var percentage = 100 - roundi((overclock/overclock_maximum) * 100)
-		overclock_progress_bar.value = percentage
 		overclock_change.emit(percentage)
 
 func _on_success_enter() -> void:

@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://dp7avpikr8kht"]
+
+[ext_resource type="Texture2D" uid="uid://d1j4rplp0yoks" path="res://hacking/Player.png" id="1_ae5dr"]
+[ext_resource type="Script" uid="uid://he78sp83x4l7" path="res://hacking/user.gd" id="2_2mocn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ka2o4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p0p7v"]
+bg_color = Color(0.984314, 0.94902, 0.211765, 1)
+
+[node name="UserSprite" type="Sprite2D"]
+texture = ExtResource("1_ae5dr")
+script = ExtResource("2_2mocn")
+
+[node name="OverclockProgressBar" type="ProgressBar" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -51.0
+offset_top = -35.0
+offset_right = -14.0
+offset_bottom = -31.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxEmpty_ka2o4")
+theme_override_styles/fill = SubResource("StyleBoxFlat_p0p7v")
+step = 1.0
+show_percentage = false

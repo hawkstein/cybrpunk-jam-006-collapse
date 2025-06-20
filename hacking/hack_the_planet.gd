@@ -9,6 +9,7 @@ const GUARD = preload("res://hacking/Guard.tscn")
 @onready var overclock_label: Label = $UI/Layout/Overclock
 @onready var hacking_status: Node2D = $HackingStatus
 @onready var countdown: Label = $UI/Layout/Countdown
+@onready var user_sprite: Sprite2D = $UI/Layout/UserSprite
 
 var servers:= Array([], TYPE_OBJECT, "Node2D", null)
 var connections := Array([], TYPE_OBJECT, "Node2D", null)
@@ -252,6 +253,7 @@ func _on_player_focus_tween_finished() -> void:
 
 func _on_player_overclock_change(overclock_percentage: float) -> void:
 	overclock_label.text = "Overclock: {0}%".format([overclock_percentage])
+	user_sprite.update_overclock(overclock_percentage)
 
 func _on_player_hack_started(server_key: int, target_key: int) -> void:
 	hacking_status.visible = true
