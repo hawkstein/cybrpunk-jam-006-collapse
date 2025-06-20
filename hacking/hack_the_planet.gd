@@ -133,7 +133,7 @@ func load_level_three() -> void:
 	_add_all_server_connections()
 	# add guards
 	add_guard(col_one[3])
-	add_guard(col_three[3])
+	add_guard(col_one[1])
 
 func load_level_four() -> void:
 	var start = Vector2(576,600)
@@ -149,27 +149,26 @@ func load_level_four() -> void:
 	var col_one = build_column(servers[row_three[1]].position + Vector2(0, -GRID_SIZE), row_three[1], 3)
 	var col_two = build_column(servers[row_four[1]].position + Vector2(0, -GRID_SIZE), row_four[1], 2)
 	var col_three = build_column(servers[row_three[1]].position + Vector2(GRID_SIZE, -GRID_SIZE), row_three[1], 3)
-	#
-	#_translate_server(col_one[3], Vector2(-GRID_SIZE, 0))
-	#_translate_server(col_one[1], Vector2(-GRID_SIZE, 0))
-	#
-	build_edges(row_one[0], row_three[1])
-	#build_edges(col_one[2], col_two[2])
-	#build_edges(col_two[2], col_three[2])
-	#build_edges(col_one[3], col_two[3])
-	#build_edges(col_two[3], col_three[3])
-	#
-	#remove_edges(col_one[1], col_one[2])
-	#remove_edges(col_three[2], col_three[3])
+	var col_four = build_column(servers[col_two[0]].position + Vector2(GRID_SIZE, -GRID_SIZE/2), col_two[0], 2)
+	var left_server = add_server(servers[row_three[0]].position + Vector2(0, -GRID_SIZE), [row_three[0]])
+	var top_server = add_server(servers[col_three[2]].position + Vector2(GRID_SIZE, -GRID_SIZE), [col_three[1]])
 	
-	#var target = add_server(servers[col_two[3]].position + y_shift, [])
-	#build_edges(col_two[3], target.id)
-	#target.is_target = true
+	build_edges(row_one[0], row_three[1])
+	build_edges(row_three[0], col_one[0])
+	build_edges(left_server.id, col_one[1])
+	build_edges(col_three[0], row_four[0])
+	build_edges(row_four[0], row_two[1])
+	build_edges(row_one[1], row_three[1])
+	build_edges(col_three[0], col_two[1])
+	build_edges(col_three[1], col_two[0])
+	build_edges(col_four[1], col_two[1])
+	
+	servers[col_four[1]].is_target = true
 	
 	_add_all_server_connections()
 	# add guards
-	#add_guard(col_one[3])
-	#add_guard(col_three[3])
+	add_guard(left_server.id)
+	add_guard(col_four[1])
 
 func load_level_five() -> void:
 	load_level_four()
