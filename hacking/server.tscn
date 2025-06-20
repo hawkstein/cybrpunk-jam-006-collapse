@@ -7,6 +7,7 @@
 script = ExtResource("1_nxwuo")
 
 [node name="Rack" type="Sprite2D" parent="."]
+z_index = 1
 texture = ExtResource("2_cxoxq")
 
 [node name="Traces" type="Node2D" parent="."]

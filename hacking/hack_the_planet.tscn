@@ -12,7 +12,7 @@
 script = ExtResource("1_hvljp")
 
 [node name="Player" parent="." instance=ExtResource("2_cumln")]
-z_index = 1
+z_index = 2
 
 [node name="HackingStatus" parent="." instance=ExtResource("3_iarxw")]
 visible = false

@@ -53,7 +53,7 @@ func _format_clock() -> void:
 
 func load_level() -> void:
 	var level_loader:Callable = levels[Director.current_level]
-	#var level_loader:Callable = levels[3]
+	#var level_loader:Callable = levels[1]
 	level_loader.call()
 	var start_server = servers[0]
 	# for init, manually set the position as the game is potentially paused
