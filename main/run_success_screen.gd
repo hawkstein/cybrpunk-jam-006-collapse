@@ -23,3 +23,7 @@ func _return_to_start() -> void:
 	var fade_opts = SceneManager.create_options(0.5)
 	var no_click_opts = SceneManager.create_general_options(Color(0,0,0), 0, false)
 	SceneManager.change_scene("start_screen", fade_opts , fade_opts, no_click_opts)
+
+
+func _on_no_button_pressed() -> void:
+	_return_to_start()
