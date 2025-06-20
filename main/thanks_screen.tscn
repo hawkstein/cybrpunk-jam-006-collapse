@@ -54,9 +54,10 @@ world of winners and losers
 from the collapse"
 autowrap_mode = 2
 
-[node name="Button" type="Button" parent="VBoxContainer"]
+[node name="StartButton" type="Button" parent="VBoxContainer"]
+process_mode = 3
 layout_mode = 2
 theme = ExtResource("2_rdskk")
-text = "Start Screen"
+text = "Start screen"
 
-[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
