@@ -4,6 +4,8 @@ const SERVER = preload("res://hacking/server.tscn")
 const CONNECTION = preload("res://hacking/connection.tscn")
 const GUARD = preload("res://hacking/Guard.tscn")
 
+const GRID_SIZE = 128
+
 @onready var player: Node2D = $Player
 @onready var hint: Control = $Tutorial/Hint
 @onready var overclock_label: Label = $UI/Layout/Overclock
@@ -19,12 +21,20 @@ var connection_seconds_elapsed := 0.0
 
 var blackboard := Blackboard.new()
 
-var levels:= [load_level_zero, load_level_one, load_level_two, load_level_three, load_level_three, load_level_three, load_level_three, load_level_three]
+var levels:= [load_level_zero,
+			load_level_one,
+			load_level_two,
+			load_level_three,
+			load_level_four,
+			load_level_five,
+			load_level_six,
+			load_level_seven]
 
 var in_game_hints:Dictionary[int, StringName] = {} 
 
 func _ready() -> void:
 	load_level()
+	_format_clock()
 	Orchestra.play_bg_music()
 
 func _process(delta: float) -> void:
@@ -32,15 +42,18 @@ func _process(delta: float) -> void:
 	if connection_seconds_elapsed > seconds_until_alert:
 		_on_player_run_ended(false)
 	else:
-		var remaining = seconds_until_alert-connection_seconds_elapsed
-		var minutes = str(floori(remaining/60)).pad_zeros(2)
-		var seconds = str(fmod(remaining, 60)).pad_decimals(2).replace(".", ":")
-		var clock_format = minutes+":"+seconds
-		countdown.text = clock_format
+		_format_clock()
+
+func _format_clock() -> void:
+	var remaining = seconds_until_alert-connection_seconds_elapsed
+	var minutes = str(floori(remaining/60)).pad_zeros(2)
+	var seconds = str(fmod(remaining, 60)).pad_zeros(2).pad_decimals(2).replace(".", ":")
+	var clock_format = minutes+":"+seconds
+	countdown.text = clock_format
 
 func load_level() -> void:
-	print("loading level {0}...".format([Director.current_level]))
 	var level_loader:Callable = levels[Director.current_level]
+	#var level_loader:Callable = levels[3]
 	level_loader.call()
 	var start_server = servers[0]
 	# for init, manually set the position as the game is potentially paused
@@ -48,73 +61,47 @@ func load_level() -> void:
 	move_player_to(start_server)
 	blackboard.set_var(&"servers", servers)
 
-func load_level_zero() -> void:
-	var start = Vector2(576,600)
-	var y_shift =  Vector2(0, -128)
-	var start_server = add_server(start, [1,2,3])
-	var layer_one = build_layer(start + y_shift, start_server.id)
-	var col_one_id = build_column(layer_one[0].position + y_shift, layer_one[0].id, 2)
-	var col_two_id = build_column(layer_one[1].position + y_shift, layer_one[1].id, 2)
-	var col_three_id = build_column(layer_one[2].position + y_shift, layer_one[2].id, 2)
-	build_edges(col_one_id, col_two_id)
-	build_edges(col_two_id, col_three_id)
-	var target = add_server(servers[col_two_id].position + y_shift, [])
-	build_edges(col_two_id, target.id)
-	target.is_target = true
-	
+func _add_all_server_connections() -> void:
 	for server in servers:
 		add_connections(server.id, server.edges)
-	
+
+func _build_tutorial_servers() -> Server:
+	var start = Vector2(576,600)
+	var y_shift =  Vector2(0, -GRID_SIZE)
+	var start_server = add_server(start, [1,2,3])
+	var row_one = build_row(Vector2(-GRID_SIZE, 0) + start + y_shift, start_server.id, 3)
+	var col_one = build_column(servers[row_one[0]].position + y_shift, servers[row_one[0]].id, 2)
+	var col_two = build_column(servers[row_one[1]].position + y_shift, servers[row_one[1]].id, 2)
+	var col_three = build_column(servers[row_one[2]].position + y_shift, servers[row_one[2]].id, 2)
+	build_edges(col_one[1], col_two[1])
+	build_edges(col_two[1], col_three[1])
+	var target = add_server(servers[col_two[1]].position + y_shift, [])
+	build_edges(col_two[1], target.id)
+	target.is_target = true
+	return target
+
+func load_level_zero() -> void:
+	var target = _build_tutorial_servers()
+	_add_all_server_connections()
 	HintManager.queue_hint(&"runner", player)
 	HintManager.queue_hint(&"target_server", target)
 	HintManager.queue_hint(&"how_to", player)
-	
 	in_game_hints.set(1, &"hack_move")
 	in_game_hints.set(2, &"hack_move")
 	in_game_hints.set(3, &"hack_move")
 
 func load_level_one() -> void:
-	var start = Vector2(576,600)
-	var y_shift =  Vector2(0, -128)
-	var start_server = add_server(start, [1,2,3])
-	var layer_one = build_layer(start + y_shift, start_server.id)
-	var col_one_id = build_column(layer_one[0].position + y_shift, layer_one[0].id, 2)
-	var col_two_id = build_column(layer_one[1].position + y_shift, layer_one[1].id, 2)
-	var col_three_id = build_column(layer_one[2].position + y_shift, layer_one[2].id, 2)
-	build_edges(col_one_id, col_two_id)
-	build_edges(col_two_id, col_three_id)
-	var target = add_server(servers[col_two_id].position + y_shift, [])
-	build_edges(col_two_id, target.id)
-	target.is_target = true
-	
-	for server in servers:
-		add_connections(server.id, server.edges)
-
+	var target = _build_tutorial_servers()
+	_add_all_server_connections()
 	HintManager.queue_hint(&"overclock", servers[2])
 	in_game_hints.set(4, &"cooling")
 	in_game_hints.set(5, &"cooling")
 	in_game_hints.set(6, &"cooling")
 
 func load_level_two() -> void:
-	var start = Vector2(576,600)
-	var y_shift =  Vector2(0, -128)
-	var start_server = add_server(start, [1,2,3])
-	var layer_one = build_layer(start + y_shift, start_server.id)
-	var col_one_id = build_column(layer_one[0].position + y_shift, layer_one[0].id, 2)
-	var col_two_id = build_column(layer_one[1].position + y_shift, layer_one[1].id, 2)
-	var col_three_id = build_column(layer_one[2].position + y_shift, layer_one[2].id, 2)
-	build_edges(col_one_id, col_two_id)
-	build_edges(col_two_id, col_three_id)
-	var target = add_server(servers[col_two_id].position + y_shift, [])
-	build_edges(col_two_id, target.id)
-	target.is_target = true
-	
-	for server in servers:
-		add_connections(server.id, server.edges)
-	# add guard
-	var guard = add_guard(col_two_id)
-	
-	#add initial hints
+	var target = _build_tutorial_servers()
+	_add_all_server_connections()
+	var guard = add_guard(target.edges[0])
 	HintManager.queue_hint(&"target_server_reminder", target)
 	HintManager.queue_hint(&"enemy_guard", guard)
 
@@ -122,41 +109,104 @@ func load_level_three() -> void:
 	var start = Vector2(576,600)
 	var y_shift =  Vector2(0, -128)
 	var start_server = add_server(start, [1,2,3])
-	var layer_one = build_layer(start + y_shift, start_server.id)
-	var col_one_id = build_column(layer_one[0].position + y_shift, layer_one[0].id, 4)
-	var col_two_id = build_column(layer_one[1].position + y_shift, layer_one[1].id, 4)
-	var col_three_id = build_column(layer_one[2].position + y_shift, layer_one[2].id, 4)
-	build_edges(col_one_id, col_two_id)
-	build_edges(col_two_id, col_three_id)
-	var target = add_server(servers[col_two_id].position + y_shift, [])
-	build_edges(col_two_id, target.id)
+	var row_one = build_row(Vector2(-GRID_SIZE, 0) + start + y_shift, start_server.id, 3)
+	var col_one = build_column(servers[row_one[0]].position + y_shift, servers[row_one[0]].id, 4)
+	var col_two = build_column(servers[row_one[1]].position + y_shift, servers[row_one[1]].id, 4)
+	var col_three = build_column(servers[row_one[2]].position + y_shift, servers[row_one[2]].id, 4)
+	
+	_translate_server(col_one[3], Vector2(-GRID_SIZE, 0))
+	_translate_server(col_one[1], Vector2(-GRID_SIZE, 0))
+	
+	build_edges(col_two[0], col_three[0])
+	build_edges(col_one[2], col_two[2])
+	build_edges(col_two[2], col_three[2])
+	build_edges(col_one[3], col_two[3])
+	build_edges(col_two[3], col_three[3])
+	
+	remove_edges(col_one[1], col_one[2])
+	remove_edges(col_three[2], col_three[3])
+	
+	var target = add_server(servers[col_two[3]].position + y_shift, [])
+	build_edges(col_two[3], target.id)
 	target.is_target = true
 	
-	for server in servers:
-		add_connections(server.id, server.edges)
+	_add_all_server_connections()
 	# add guards
-	add_guard(col_two_id)
-	add_guard(col_three_id)
+	add_guard(col_one[3])
+	add_guard(col_three[3])
 
-func build_layer(origin:Vector2, parent:int) -> Array[Server]:
-	var x_shift = 128
-	var left = add_server(origin + Vector2(-x_shift, 0), [parent])
-	var mid = add_server(origin, [parent])
-	var right = add_server(origin + Vector2(x_shift, 0), [parent])
-	left.edges.append(mid.id)
-	mid.edges.append_array([left.id, right.id])
-	right.edges.append(mid.id)
-	return [left,mid,right]
+func load_level_four() -> void:
+	var start = Vector2(576,600)
+	var start_server = add_server(start, [])
+	var row_one = build_row(start + Vector2(-GRID_SIZE, -GRID_SIZE), start_server.id, 2)
+	var row_two = build_row(start + Vector2(GRID_SIZE, -GRID_SIZE), start_server.id, 2)
+	start_server.edges.append_array(row_one)
+	start_server.edges.append_array(row_two)
+	var row_three = build_row(servers[row_one[1]].position + Vector2(-GRID_SIZE*2, -GRID_SIZE), row_one[1], 2)
+	servers[row_one[1]].edges.append_array(row_three)
+	var row_four = build_row(servers[row_two[0]].position + Vector2(0, -GRID_SIZE), row_two[0], 2)
+	servers[row_two[0]].edges.append_array(row_four)
+	var col_one = build_column(servers[row_three[1]].position + Vector2(0, -GRID_SIZE), row_three[1], 3)
+	var col_two = build_column(servers[row_four[1]].position + Vector2(0, -GRID_SIZE), row_four[1], 2)
+	var col_three = build_column(servers[row_three[1]].position + Vector2(GRID_SIZE, -GRID_SIZE), row_three[1], 3)
+	#
+	#_translate_server(col_one[3], Vector2(-GRID_SIZE, 0))
+	#_translate_server(col_one[1], Vector2(-GRID_SIZE, 0))
+	#
+	build_edges(row_one[0], row_three[1])
+	#build_edges(col_one[2], col_two[2])
+	#build_edges(col_two[2], col_three[2])
+	#build_edges(col_one[3], col_two[3])
+	#build_edges(col_two[3], col_three[3])
+	#
+	#remove_edges(col_one[1], col_one[2])
+	#remove_edges(col_three[2], col_three[3])
+	
+	#var target = add_server(servers[col_two[3]].position + y_shift, [])
+	#build_edges(col_two[3], target.id)
+	#target.is_target = true
+	
+	_add_all_server_connections()
+	# add guards
+	#add_guard(col_one[3])
+	#add_guard(col_three[3])
 
-func build_column(origin:Vector2, parent:int, rows:int) -> int:
+func load_level_five() -> void:
+	load_level_four()
+
+func load_level_six() -> void:
+	load_level_four()
+	
+func load_level_seven() -> void:
+	load_level_four()
+
+func build_row(origin:Vector2, parent:int, num_columns:int) -> Array[int]:
+	var left_server
+	var row_ids:Array[int] = []
+	for i in range(num_columns):
+		var edges = []
+		if parent >= 0:
+			edges.append(parent)
+		var server = add_server(origin + Vector2(GRID_SIZE * i, 0), [parent])
+		if left_server:
+			edges.append(server.id)
+		left_server = server.id
+		row_ids.append(server.id)
+	return row_ids
+
+func _translate_server(p_key:int, t_vector:Vector2) -> void:
+	servers[p_key].position += t_vector
+
+func build_column(origin:Vector2, parent:int, rows:int) -> Array[int]:
 	var y_shift = -128
 	var edge = parent
-	var row
+	var row_ids:Array[int] = []
 	for i in range(rows):
-		row = add_server(origin + Vector2(0, i * y_shift), [edge])
-		servers[edge].edges.append(row.id)
-		edge = row.id
-	return row.id
+		var server = add_server(origin + Vector2(0, i * y_shift), [edge])
+		servers[edge].edges.append(server.id)
+		row_ids.append(server.id)
+		edge = server.id
+	return row_ids
 
 func build_edges(key_one:int, key_two:int) -> void:
 	var server_one:Server = servers[key_one]
@@ -164,12 +214,17 @@ func build_edges(key_one:int, key_two:int) -> void:
 	server_one.edges.append(key_two)
 	server_two.edges.append(key_one)
 
+func remove_edges(key_one:int, key_two:int) -> void:
+	var server_one:Server = servers[key_one]
+	var server_two:Server = servers[key_two]
+	server_one.edges.erase(key_two)
+	server_two.edges.erase(key_one)
+
 func add_guard(p_server_key:int) -> Guard:
 	var guard = GUARD.instantiate()
 	add_child(guard)
 	guard.set_blackboard(blackboard)
 	var server = servers[p_server_key]
-	print("guard server: {0}".format([server.id]))
 	guard.set_current_server(server, build_options(server), player)
 	guard.connect("request_move_to_server", _on_guard_request_move)
 	return guard
