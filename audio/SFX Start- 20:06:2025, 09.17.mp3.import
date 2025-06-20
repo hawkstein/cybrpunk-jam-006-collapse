@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://d1x88u2iiver4"
+path="res://.godot/imported/SFX Start- 20:06:2025, 09.17.mp3-7b18776e9674008f586e030414a2cf8d.mp3str"
+
+[deps]
+
+source_file="res://audio/SFX Start- 20:06:2025, 09.17.mp3"
+dest_files=["res://.godot/imported/SFX Start- 20:06:2025, 09.17.mp3-7b18776e9674008f586e030414a2cf8d.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
