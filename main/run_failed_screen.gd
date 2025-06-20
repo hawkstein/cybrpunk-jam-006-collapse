@@ -1,6 +1,7 @@
 extends Control
 
 func _ready() -> void:
+	Orchestra.play_menu_music()
 	get_tree().paused = false
 
 func _process(_delta: float) -> void:

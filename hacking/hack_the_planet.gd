@@ -227,7 +227,6 @@ func _on_guard_request_move(guard:Guard, key:int) -> void:
 	move_guard_to(guard, servers[key])
 
 func _on_player_run_ended(success:bool) -> void:
-	Orchestra.stop_bg_music()
 	get_tree().paused = true
 	# TODO: add sound effects and animation
 	# but for now just wait a little and then change scene

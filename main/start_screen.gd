@@ -5,6 +5,7 @@ extends Control
 @onready var anim_panel: Control = $AnimatedPanel
 
 func _ready() -> void:
+	Orchestra.play_menu_music()
 	if Director.current_level > 0:
 		start_button.text = "Resume"
 	else:
@@ -20,6 +21,7 @@ func _play_outro() -> void:
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == &"outro":
 		animation_player.play(&"blurb")
+		Orchestra._stop_menu_music()
 	if anim_name == &"blurb":
 		var fade_opts = SceneManager.create_options()
 		var no_click_opts = SceneManager.create_general_options(Color(0,0,0), 0, false)

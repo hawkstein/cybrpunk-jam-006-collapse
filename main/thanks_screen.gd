@@ -1,6 +1,7 @@
 extends Control
 
 func _ready() -> void:
+	Orchestra.stop_bg_music()
 	get_tree().paused = false
 
 func _on_start_button_pressed() -> void:
