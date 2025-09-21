@@ -26,9 +26,7 @@ var levels:= [load_level_zero,
 			load_level_two,
 			load_level_three,
 			load_level_four,
-			load_level_five,
-			load_level_six,
-			load_level_seven]
+			load_level_five ]
 
 var in_game_hints:Dictionary[int, StringName] = {} 
 
@@ -94,6 +92,7 @@ func load_level_one() -> void:
 	var target = _build_tutorial_servers()
 	_add_all_server_connections()
 	HintManager.queue_hint(&"overclock", servers[2])
+	HintManager.queue_hint(&"timer", target)
 	in_game_hints.set(4, &"cooling")
 	in_game_hints.set(5, &"cooling")
 	in_game_hints.set(6, &"cooling")
@@ -104,6 +103,7 @@ func load_level_two() -> void:
 	var guard = add_guard(target.edges[0])
 	HintManager.queue_hint(&"target_server_reminder", target)
 	HintManager.queue_hint(&"enemy_guard", guard)
+	HintManager.queue_hint(&"push", guard)
 
 func load_level_three() -> void:
 	var start = Vector2(576,600)
@@ -171,24 +171,70 @@ func load_level_four() -> void:
 	add_guard(col_four[1])
 
 func load_level_five() -> void:
-	load_level_four()
-
-func load_level_six() -> void:
-	load_level_four()
+	var start = Vector2(576,600)
+	var row_one = build_row(start + Vector2(-GRID_SIZE, 0), -1, 3)
+	var row_two = build_row(servers[row_one[1]].position + Vector2(0, -GRID_SIZE), -1, 3)
+	var row_three = build_row(start + Vector2(-GRID_SIZE, -GRID_SIZE*2), -1, 5)
+	var col_one = build_column(servers[row_three[0]].position + Vector2(0, -GRID_SIZE), row_three[0], 2)
+	var col_two = build_column(servers[row_three[1]].position + Vector2(0, -GRID_SIZE), row_three[1], 7)
+	var col_three = build_column(servers[row_three[2]].position + Vector2(0, -GRID_SIZE), row_three[2], 6)
+	var col_four = build_column(servers[row_three[3]].position + Vector2(0, -GRID_SIZE), row_three[3], 7)
+	var col_five = build_column(servers[row_three[4]].position + Vector2(0, -GRID_SIZE), row_three[4], 2)
 	
-func load_level_seven() -> void:
-	load_level_four()
+	var lower_left = add_server(servers[col_one[0]].position + Vector2(-GRID_SIZE, -GRID_SIZE), [col_one[0]])
+	var lower_right = add_server(servers[col_five[0]].position + Vector2(GRID_SIZE, GRID_SIZE), [col_five[0]])
+	
+	build_edges(row_one[0], row_two[0])
+	build_edges(row_one[1], row_two[0])
+	build_edges(row_one[2], row_two[1])
+	build_edges(row_one[2], row_two[2])
+	build_edges(row_two[1], row_three[2])
+	build_edges(row_two[2], row_three[3])
+	build_edges(row_two[2], row_three[4])
+	
+	_cross_edges([col_one, col_two, col_three, col_four, col_five], 0)
+	_cross_edges([col_one, col_two, col_three, col_four, col_five], 1)
+	
+	_translate_server(row_one[0], Vector2(-GRID_SIZE, 0))
+	
+	build_edges(col_two[2], col_three[3])
+	build_edges(col_two[3], col_three[4])
+	build_edges(col_four[2], col_three[3])
+	build_edges(col_four[3], col_three[4])
+	
+	var top_node = add_server(servers[col_two[5]].position + Vector2(-GRID_SIZE, 0), [])
+	build_edges(col_two[4], top_node.id)
+	var top_left = add_server(top_node.position + Vector2(-GRID_SIZE, GRID_SIZE), [])
+	build_edges(top_left.id, top_node.id)
+	
+	var target = add_server(servers[col_four[4]].position + Vector2(GRID_SIZE, -GRID_SIZE), [])
+	build_edges(col_four[4], target.id)
+	target.is_target = true
+	
+	_add_all_server_connections()
+	
+	add_guard(col_two[0])
+	add_guard(top_left.id)
+	add_guard(target.id)
+
+func _cross_edges(p_arrays:Array, p_index:int) -> void:
+	for i in range(p_arrays.size()):
+		var previous = i - 1
+		if previous >= 0:
+			build_edges(p_arrays[previous][p_index], p_arrays[i][p_index])
 
 func build_row(origin:Vector2, parent:int, num_columns:int) -> Array[int]:
-	var left_server
+	var left_server = null
 	var row_ids:Array[int] = []
 	for i in range(num_columns):
-		var edges = []
+		var edges:Array[int] = []
 		if parent >= 0:
 			edges.append(parent)
-		var server = add_server(origin + Vector2(GRID_SIZE * i, 0), [parent])
-		if left_server:
-			edges.append(server.id)
+		var server = add_server(origin + Vector2(GRID_SIZE * i, 0), edges)
+		if left_server != null:
+			edges.append(left_server)
+			if parent < 0:
+				servers[left_server].edges.append(server.id)
 		left_server = server.id
 		row_ids.append(server.id)
 	return row_ids

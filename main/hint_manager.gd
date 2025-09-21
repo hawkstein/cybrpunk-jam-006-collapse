@@ -25,6 +25,8 @@ func _ready() -> void:
 	hints.set(&"runner", Hint.new("You are a runner. Hacking into the servers of the rich corporations"))
 	hints.set(&"overclock", Hint.new("Hit [D] to overclock. This speeds up hacking until you overheat"))
 	hints.set(&"cooling", Hint.new("When not overclocking, you will slowly cool down"))
+	hints.set(&"timer", Hint.new("Make it to your target before the time runs out"))
+	hints.set(&"push", Hint.new("Tap [A] to hack faster. This will leave traces in the system that cause guards to hunt you."))
 
 func reset() -> void:
 	for key in hints:

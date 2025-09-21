@@ -4,7 +4,7 @@ extends Node
 var save_path := "user://game_data.json"
 var current_level := 0
 var last_tutorial : = 2
-var max_level := 7
+var max_level := 5
 
 var scenarios := Scenarios.new()
 
@@ -52,4 +52,4 @@ func load_game_data() -> void:
 	Orchestra.max_bg_volume = data.get("bg_volume", Orchestra.max_bg_volume)
 
 func get_description() -> String:
-	return scenarios.descriptions[current_level - last_tutorial]
+	return scenarios.descriptions[current_level - (last_tutorial+1)]
